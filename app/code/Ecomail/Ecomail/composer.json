@@ -1,0 +1,29 @@
+{
+  "name":        "ecomail/ecomail-magento2",
+  "description": "",
+  "authors":     [
+    {
+      "name":  "Jan Cinert",
+      "email": "jan.cinert@gmail.com"
+    }
+  ],
+  "require":     {
+    "php":                                "~5.5.0|~5.6.0",
+    "magento/module-config":              "100.0.*",
+    "magento/module-store":               "100.0.*",
+    "magento/module-sales":               "100.0.*",
+    "magento/framework":                  "100.0.*"
+  },
+  "type":        "magento2-module",
+  "version":     "1.0.0",
+  "license":     [
+  ],
+  "extra":       {
+    "map": [
+      [
+        "*", "Ecomail/Ecomail"
+      ]
+    ]
+  }
+
+}

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © 2016 Magento. All rights reserved.
+ * See COPYING.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="newsletter_subscriber_save_commit_after">
+        <observer name="ecomail_observer_newsletter_subscriber_save_commit_after" instance="Ecomail\Ecomail\Observer\SubscribedToNewsletter"/>
+    </event>
+    <event name="checkout_submit_all_after">
+        <observer name="ecomail_observer_checkout_submit_all_after" instance="Ecomail\Ecomail\Observer\CheckoutSubmitAllAfter"/>
+    </event>
+    <event name="checkout_cart_add_product_complete">
+        <observer name="ecomail_observer_checkout_cart_add_product_complete" instance="Ecomail\Ecomail\Observer\ProcessAddToCart"/>
+    </event>
+</config>
