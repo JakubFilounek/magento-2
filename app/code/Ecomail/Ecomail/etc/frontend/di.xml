@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="ecomail" xsi:type="string">Ecomail\Ecomail\CustomerData\Ecomail</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Ecomail\Ecomail\CustomerData\Ecomail">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomail\Ecomail\Observer\CustomerLogin">
+        <arguments>
+            <argument name="customerSession" xsi:type="object">Magento\Customer\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomail\Ecomail\Model\EventManager">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Add">
+        <plugin name="ecomailCartAdd" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Cart\Add" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Addgroup">
+        <plugin name="ecomailCartAddgroup" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Cart\Addgroup" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\Delete">
+        <plugin name="ecomailCartDelete" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Cart\Delete" />
+    </type>
+    <type name="Magento\Checkout\Controller\Cart\UpdatePost">
+        <plugin name="ecomailCartUpdatePost" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Cart\UpdatePost" />
+    </type>
+    <type name="Magento\Checkout\Controller\Sidebar\RemoveItem">
+        <plugin name="ecomailCartSidebarRemoveItem" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Sidebar\RemoveItem" />
+    </type>
+</config>

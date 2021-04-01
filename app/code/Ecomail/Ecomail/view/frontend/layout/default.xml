@@ -1,11 +1,16 @@
 <?xml version="1.0"?>
-<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
-        <referenceContainer name="footer-container">
-            <block cacheable="false"
-                   template="Ecomail_Ecomail::footer.phtml"
-                   class="Magento\Framework\View\Element\Template"
-            />
+        <referenceContainer name="before.body.end">
+            <block class="Magento\Framework\View\Element\Template" name="ecomail.tracking"
+                   template="Ecomail_Ecomail::tracking.phtml">
+                <arguments>
+                    <argument name="data" xsi:type="array">
+                        <item name="cache_lifetime" xsi:type="number">86400</item>
+                    </argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

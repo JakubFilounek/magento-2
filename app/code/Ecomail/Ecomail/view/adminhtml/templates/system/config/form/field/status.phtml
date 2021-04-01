@@ -1,0 +1,25 @@
+<?php /** @var $block Ecomail\Ecomail\Block\System\Config\Form\Field\Status */ ?>
+<?php $statusCode = $block->getStatusCode() ?>
+
+<span class="ecomail-status <?= $statusCode ?>"><?= __($statusCode) ?></span>
+
+<style type="text/css">
+    .ecomail-status {
+        padding: 0.5rem 2rem;
+        color: white;
+        display: inline-block;
+        border-radius: 3px;
+    }
+
+    .ecomail-status.Inactive {
+        background-color: #a5a6b7;
+    }
+
+    .ecomail-status.Active {
+        background-color: #52C41a;
+    }
+
+    .ecomail-status.Error {
+        background-color: #ff4d4f;
+    }
+</style>

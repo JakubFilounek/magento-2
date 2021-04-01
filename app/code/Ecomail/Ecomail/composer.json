@@ -1,29 +1,29 @@
 {
-  "name":        "ecomail/ecomail-magento2",
-  "description": "",
-  "authors":     [
-    {
-      "name":  "Jan Cinert",
-      "email": "jan.cinert@gmail.com"
+    "name": "ecomain/ecomail",
+    "description": "System integration with Ecomail.cz services",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Maghos dev team",
+            "email": "support@maghos.com"
+        }
+    ],
+    "require": {
+        "php": "~7.0.13|~7.1.0|~7.2.0|~7.3.0|~7.4.0",
+        "magento/module-newsletter": "100.*.*",
+        "magento/module-sales": "101.*.*|102.*.*|103.*.*",
+        "ext-curl": "*"
+    },
+    "type": "magento2-module",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Ecomail\\Ecomail\\": ""
+        }
     }
-  ],
-  "require":     {
-    "php":                                "~5.5.0|~5.6.0",
-    "magento/module-config":              "100.0.*",
-    "magento/module-store":               "100.0.*",
-    "magento/module-sales":               "100.0.*",
-    "magento/framework":                  "100.0.*"
-  },
-  "type":        "magento2-module",
-  "version":     "1.0.0",
-  "license":     [
-  ],
-  "extra":       {
-    "map": [
-      [
-        "*", "Ecomail/Ecomail"
-      ]
-    ]
-  }
-
 }

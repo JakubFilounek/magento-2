@@ -1,0 +1,49 @@
+<?php /** @var $block Ecomail\Ecomail\Block\System\Config\Form\Field\Subscriber\LoadLists */ ?>
+
+<?= $block->getButtonHtml() ?>
+
+<script>
+    require([
+        'jquery',
+        'mage/backend/validation',
+        'jquery/validate'
+    ], function ($) {
+        $('#load_lists').click(function () {
+            if (!$.validator.validateElement('#ecomail_general_api_key')) {
+                return;
+            }
+
+            let apiKey = $('#ecomail_general_api_key').val();
+
+            $.ajax({
+                url: '<?= /* @escapeNotVerified */ $block->getAjaxUrl() ?>',
+                dataType: 'json',
+                data: {
+                    'api_key': apiKey
+                },
+                method: 'get',
+                beforeSend: function () {
+                    $('#load_lists').text('<?= __('Loading ...') ?>');
+                },
+                success: function (data) {
+                    $('#ecomail_general_subscriber_list').find('option').remove();
+
+                    $.each(data, function (key, value) {
+                        $('#ecomail_general_subscriber_list')
+                            .append(
+                                $('<option />')
+                                    .text(value.label)
+                                    .val(value.value)
+                            );
+                    });
+                },
+                error: function() {
+                    $('#ecomail_general_api_key').val('')
+                },
+                complete: function () {
+                    $('#load_lists').text('<?= __('Load Lists') ?>');
+                }
+            });
+        });
+    });
+</script>

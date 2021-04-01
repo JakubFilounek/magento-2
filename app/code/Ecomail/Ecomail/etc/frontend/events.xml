@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
-    <event name="sales_order_place_after">
-        <observer name="ecomail_observer_order_place_after" instance="Ecomail\Ecomail\Observer\OrderPlaced" />
+    <event name="customer_login">
+        <observer name="ecomail_observer_customer_login" instance="Ecomail\Ecomail\Observer\CustomerLogin"/>
     </event>
 </config>

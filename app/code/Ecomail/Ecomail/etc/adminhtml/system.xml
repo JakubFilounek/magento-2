@@ -1,32 +1,131 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Copyright © 2015 Magento. All rights reserved.
- * See COPYING.txt for license details.
- */
--->
-<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="ecomail_config" translate="label" sortOrder="9999">
+        <section id="ecomail" translate="label" sortOrder="500" showInDefault="1" showInWebsite="1" showInStore="1">
             <label>Ecomail</label>
-        </tab>
-        <section id="ecomail_options" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
-            <label>Konfigurace</label>
-            <tab>ecomail_config</tab>
-            <resource>Ecomail_Ecomail::ecomail_config</resource>
-            <group id="properties" translate="label" type="text" sortOrder="1000" showInDefault="1" showInWebsite="1" showInStore="1">
-                <label>Nastavení</label>
-                <field id="api_key" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Vložte Váš API klíč</label>
+            <tab>customer</tab>
+            <resource>Ecomail_Ecomail::ecomail_configuration</resource>
+            <group id="general" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General</label>
+                <field id="status" type="button" translate="label" sortOrder="1" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Status</label>
+                    <frontend_model>Ecomail\Ecomail\Block\System\Config\Form\Field\Status</frontend_model>
                 </field>
-                <field id="list_id" translate="label" type="select" sortOrder="2" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Vyberte list:</label>
-                    <comment>Vyberte list do kterého budou zapsáni noví zákazníci</comment>
-                    <source_model>Ecomail\Ecomail\Model\OptionsListId</source_model>
+                <field id="enabled" type="select" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="app_id" translate="label" type="text" sortOrder="3" showInDefault="1" showInWebsite="1" showInStore="1">
-                    <label>Vložte Vaše appId</label>
-                    <comment>Tento údaj slouží pro aktivaci funkce Trackovací kód</comment>
+                <field id="api_key" type="text" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>API Key</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="subscriber_list" type="select" translate="label comment" sortOrder="30" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Subscriber List</label>
+                    <comment>Choose a subscriber list from your Ecomail account. Please note it can take up to 30 minutes for the newly created list to be available.</comment>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                    <source_model>Ecomail\Ecomail\Model\Config\Source\SubscriberList</source_model>
+                </field>
+                <field id="load_subscriber_lists" type="button" sortOrder="40" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <frontend_model>Ecomail\Ecomail\Block\System\Config\Form\Field\Subscriber\LoadLists</frontend_model>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                </field>
+                <field id="skip_double_optin" type="select" translate="label" sortOrder="50" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Skip Double opt-in</label>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="trigger_autoresponders" type="select" translate="label comment" sortOrder="60" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Trigger Autoresponders</label>
+                    <comment>Runs automated campaigns after adding a new subscription.</comment>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="personal_information" translate="label comment" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Personal Information</label>
+                <comment>Choose which information should be shared with Ecomail.</comment>
+                <depends>
+                    <field id="ecomail/general/enabled">1</field>
+                </depends>
+                <field id="send_name" type="select" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Customer name</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="send_address" type="select" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Customer address</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="address_type" type="select" translate="label" sortOrder="25" showInDefault="1"
+                       showInWebsite="1"
+                       showInStore="1">
+                    <label>Address type</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                        <field id="ecomail/personal_information/send_address">1</field>
+                    </depends>
+                    <source_model>Ecomail\Ecomail\Model\Config\Source\Address</source_model>
+                </field>
+                <field id="send_dob" type="select" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Customer DOB</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="send_orders" type="select" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Order data</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="send_cart_items" type="select" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Cart items</label>
+                    <comment>Cart items will be sent to Ecomail to support abandoned cart features.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+            <group id="tracking" translate="label" sortOrder="30" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Behavior Tracking</label>
+                <depends>
+                    <field id="ecomail/general/enabled">1</field>
+                </depends>
+                <field id="enabled" type="select" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="app_id" type="text" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
+                       showInStore="1">
+                    <label>App ID</label>
+                    <validate>required-entry</validate>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                        <field id="ecomail/tracking/enabled">1</field>
+                    </depends>
                 </field>
             </group>
         </section>

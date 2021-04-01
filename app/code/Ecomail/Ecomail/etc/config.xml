@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <ecomail>
+            <general>
+                <enabled>0</enabled>
+                <skip_double_optin>1</skip_double_optin>
+                <trigger_autoresponders>0</trigger_autoresponders>
+            </general>
+            <personal_information>
+                <send_name>1</send_name>
+                <send_address>1</send_address>
+                <address_type>1</address_type>
+                <send_dob>1</send_dob>
+                <send_orders>1</send_orders>
+                <send_cart_items>1</send_cart_items>
+            </personal_information>
+            <tracking>
+                <enabled>0</enabled>
+            </tracking>
+        </ecomail>
+    </default>
+</config>
