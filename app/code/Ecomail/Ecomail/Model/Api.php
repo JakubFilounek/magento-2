@@ -3,12 +3,11 @@
 namespace Ecomail\Ecomail\Model;
 
 use Ecomail\Ecomail\Helper\Data;
+use Ecomail\Ecomail\Model\HTTP\CurlFactory;
+use Ecomail\Ecomail\Model\HTTP\Curl;
 use Magento\Framework\Exception\IntegrationException;
-use Magento\Framework\HTTP\ZendClient;
-use Magento\Framework\HTTP\ZendClientFactory as ClientFactory;
+use Magento\Framework\Phrase;
 use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
-use Zend_Http_Client_Exception;
-use Zend_Http_Response;
 
 class Api
 {
@@ -16,10 +15,10 @@ class Api
     const API_URL = 'https://api2.ecomailapp.cz/';
     const STATUS_OK = 200;
     const STATUS_CREATED = 201;
-    const UNKNOWN_ERROR_MESSAGE = 'UNKNOWN ERROR';
+    const UNKNOWN_ERROR_MESSAGE = 'Unknown Error';
 
     /**
-     * @var ClientFactory
+     * @var CurlFactory
      */
     private $clientFactory;
 
@@ -35,12 +34,12 @@ class Api
 
     /**
      * Api constructor.
-     * @param ClientFactory $clientFactory
+     * @param CurlFactory $clientFactory
      * @param JsonSerializer $jsonSerializer
      * @param Data $helper
      */
     public function __construct(
-        ClientFactory $clientFactory,
+        CurlFactory $clientFactory,
         JsonSerializer $jsonSerializer,
         Data $helper
     ) {
@@ -54,94 +53,85 @@ class Api
      * @param array $subscriberData
      * @return array
      * @throws IntegrationException
-     * @throws Zend_Http_Client_Exception
      */
     public function addSubscriberToList(array $subscriberData): array
     {
         $client = $this->getClient();
-        $client->setUri($this->buildListUrl('subscribe'));
-        $client->setParameterPost($subscriberData);
-        $response = $client->request(ZendClient::POST);
+        $client->post($this->buildListUrl('subscribe'), $this->jsonSerializer->serialize($subscriberData));
 
-        return $this->processResponse($response);
+        return $this->processResponse($client);
     }
 
     /**
      * @param string $email
      * @return array
      * @throws IntegrationException
-     * @throws Zend_Http_Client_Exception
      */
     public function removeSubscriberFromList(string $email): array
     {
         $client = $this->getClient();
+        $client->delete($this->buildListUrl('unsubscribe'), $this->jsonSerializer->serialize(['email' => $email]));
 
-        $client->setUri($this->buildListUrl('unsubscribe'));
-        $client->setParameterPost(['email' => $email]);
-        $response = $client->request(ZendClient::DELETE);
-
-        return $this->processResponse($response);
+        return $this->processResponse($client);
     }
 
     /**
      * @param null $apiKey
      * @return array
      * @throws IntegrationException
-     * @throws Zend_Http_Client_Exception
      */
     public function getSubscriberLists($apiKey = null): array
     {
         $client = $this->getClient($apiKey);
-        $client->setUri(self::API_URL . 'lists');
-        $response = $client->request(ZendClient::GET);
+        $client->get(self::API_URL . 'lists');
 
-        return $this->processResponse($response);
+        return $this->processResponse($client);
     }
 
     /**
      * @param array $data
      * @return array
      * @throws IntegrationException
-     * @throws Zend_Http_Client_Exception
      */
     public function createTransaction(array $data): array
     {
         $client = $this->getClient();
-        $client->setUri(self::API_URL . 'tracker/transaction');
-        $client->setParameterPost($data);
-        $response = $client->request(ZendClient::POST);
+        $client->post(self::API_URL . 'tracker/transaction', $this->jsonSerializer->serialize($data));
 
-        return $this->processResponse($response);
+        return $this->processResponse($client);
     }
 
     /**
      * @param $data
      * @return array
      * @throws IntegrationException
-     * @throws Zend_Http_Client_Exception
      */
     public function updateCart($data): array
     {
         $client = $this->getClient();
-        $client->setUri(self::API_URL . 'tracker/events');
-        $client->setParameterPost($data);
-        $response = $client->request(ZendClient::POST);
+        $client->post(self::API_URL . 'tracker/events', $this->jsonSerializer->serialize($data));
 
-        return $this->processResponse($response);
+        return $this->processResponse($client);
     }
 
     /**
-     * @param Zend_Http_Response $response
+     * @param Curl $client
      * @return array
      * @throws IntegrationException
      */
-    private function processResponse(Zend_Http_Response $response): array
+    private function processResponse(Curl $client): array
     {
-        $status = $response->getStatus();
-        $response = $this->jsonSerializer->unserialize($response->getBody());
+        $status = $client->getStatus();
+        $body = $client->getBody();
+
+        try {
+            $response = $this->jsonSerializer->unserialize($body);
+        } catch (\InvalidArgumentException $e) {
+            throw new IntegrationException(__('Ecomail api error: %1', $body));
+        }
 
         if ($status !== self::STATUS_OK && $status !== self::STATUS_CREATED) {
-            throw new IntegrationException(__($this->getErrorMessage($response)));
+            throw new IntegrationException($this->getErrorMessage($response));
         }
 
         return $response;
@@ -149,19 +139,24 @@ class Api
 
     /**
      * @param null $apiKey
-     * @return ZendClient
-     * @throws Zend_Http_Client_Exception
+     * @return Curl
      */
-    private function getClient($apiKey = null): ZendClient
+    private function getClient($apiKey = null): Curl
     {
         if ($apiKey === null) {
             $apiKey = $this->helper->getApiKey();
         }
 
-        /** @var ZendClient $client */
+        /** @var Curl $client */
         $client = $this->clientFactory->create();
-
-        $client->setConfig(['timeout' => self::CLIENT_TIMEOUT]);
+        $client->setOptions([
+            CURLOPT_TIMEOUT => self::CLIENT_TIMEOUT,
+            CURLOPT_CONNECTTIMEOUT => self::CLIENT_TIMEOUT,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_SSLVERSION => CURL_SSLVERSION_TLSv1_2
+        ]);
         $client->setHeaders([
             'Content-Type' => 'application/json',
             'Key' => $apiKey
@@ -182,9 +177,9 @@ class Api
 
     /**
      * @param array $response
-     * @return string
+     * @return Phrase
      */
-    private function getErrorMessage(array $response): string
+    private function getErrorMessage(array $response): Phrase
     {
         if (isset($response['message'])) {
             return $response['message'];
@@ -199,9 +194,9 @@ class Api
                 }
             }
 
-            return __('Ecomail api error: ') . implode(', ', $messages);
+            return __('Ecomail api error: %1', implode(', ', $messages));
         }
 
-        return self::UNKNOWN_ERROR_MESSAGE;
+        return __(self::UNKNOWN_ERROR_MESSAGE);
     }
 }
