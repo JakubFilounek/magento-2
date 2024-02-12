@@ -40,7 +40,7 @@ class BasketEventMapper
         $data = [];
         $data['event'] = [
             'email' => $quote->getCustomerEmail(),
-            'category' => 'ua',
+            'category' => 'ue',
             'action' => 'Basket',
             'label' => 'Basket',
         ];
