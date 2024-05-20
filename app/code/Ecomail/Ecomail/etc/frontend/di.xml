@@ -37,4 +37,7 @@
     <type name="Magento\Checkout\Controller\Sidebar\RemoveItem">
         <plugin name="ecomailCartSidebarRemoveItem" type="Ecomail\Ecomail\Plugin\Checkout\Controller\Sidebar\RemoveItem" />
     </type>
+    <type name="Magento\Framework\App\Request\CsrfValidator">
+        <plugin name="ecomailCsrfValidationDisable" type="Ecomail\Ecomail\Plugin\Framework\App\Request\CsrfValidator" />
+    </type>
 </config>

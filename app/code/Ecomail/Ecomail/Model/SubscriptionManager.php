@@ -80,9 +80,8 @@ class SubscriptionManager
         try {
             if (!$this->subscriberExists($order->getCustomerEmail())) {
                 $this->createLocalSubscriber($order);
+                $this->api->addSubscriberToList($this->subscriberDataMapper->mapFromOrder($order));
             }
-
-            $this->api->addSubscriberToList($this->subscriberDataMapper->mapFromOrder($order));
         } catch (Exception $e) {
             $this->logger->error('Failed to add Ecomail subscription.', [$e]);
         }
@@ -109,7 +108,7 @@ class SubscriptionManager
         $subscriber = $this->subscriberFactory->create();
         $subscriber->loadByEmail($customerEmail);
 
-        return $subscriber->isSubscribed();
+        return $subscriber->getId() != null;
     }
 
     /**

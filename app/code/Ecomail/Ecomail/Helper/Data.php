@@ -4,7 +4,10 @@ namespace Ecomail\Ecomail\Helper;
 
 use Ecomail\Ecomail\Model\Config\Source\Address;
 use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Framework\Flag\FlagResource;
+use Magento\Framework\FlagFactory;
 
 class Data extends AbstractHelper
 {
@@ -23,6 +26,21 @@ class Data extends AbstractHelper
 
     const XML_PATH_ECOMAIL_TRACKING_ENABLED = 'ecomail/tracking/enabled';
     const XML_PATH_ECOMAIL_TRACKING_APP_ID = 'ecomail/tracking/app_id';
+
+    /**
+     * @param Context $context
+     * @param FlagFactory $flagFactory
+     * @param FlagResource $flagResource
+     */
+    public function __construct(
+        Context $context,
+        FlagFactory $flagFactory,
+        FlagResource $flagResource
+    ) {
+        parent::__construct($context);
+        $this->flagFactory = $flagFactory;
+        $this->flagResource = $flagResource;
+    }
 
     /**
      * @param null $store
@@ -202,5 +220,38 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_STORE,
             $store
         );
+    }
+
+    /**
+     * @return string
+     */
+    public function getWebhookHash()
+    {
+        $flag = $this->getFlagObject('ecomail_webhook');
+        if ($data = $flag->getFlagData()) {
+            return $data;
+        }
+
+        $value = uniqid();
+
+        $flag->setFlagData($value);
+        $this->flagResource->save($flag);
+        return $value;
+    }
+
+    /**
+     * @param string $code
+     * @return \Magento\Framework\Flag
+     */
+    private function getFlagObject($code)
+    {
+        $flag = $this->flagFactory->create(['data' => ['flag_code' => $code]]);
+        $this->flagResource->load(
+            $flag,
+            $code,
+            'flag_code'
+        );
+
+        return $flag;
     }
 }

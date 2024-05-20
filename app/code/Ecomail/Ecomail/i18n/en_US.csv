@@ -26,3 +26,5 @@ Enabled,Enabled
 "Address type","Address type"
 "Trigger Autoresponders","Trigger Autoresponders"
 "Runs automated campaigns after adding a new subscription.","Runs automated campaigns after adding a new subscription."
+"Invalid request data, JSON unserialize error.","Invalid request data, JSON unserialize error."
+"Invalid request data.","Invalid request data."

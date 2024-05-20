@@ -26,3 +26,5 @@ Enabled,Zapnout
 "Address type","Typ adresy"
 "Trigger Autoresponders","Spouštět automatizované odpovědi"
 "Runs automated campaigns after adding a new subscription.","Spustí automatizované kampaně po přidání nového kontaktu."
+"Invalid request data, JSON unserialize error.","Nesprávná data požadavku, chyba parsování JSON."
+"Invalid request data.","Nesprávná data požadavku."

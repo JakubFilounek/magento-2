@@ -182,7 +182,7 @@ class Api
     private function getErrorMessage(array $response): Phrase
     {
         if (isset($response['message'])) {
-            return $response['message'];
+            return __($response['message']);
         }
 
         if (isset($response['errors'])) {
