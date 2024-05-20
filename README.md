@@ -2,7 +2,7 @@
 
 Aktuální verzi pluginu lze stáhnout zde:
 
-https://github.com/Ecomailcz/magento-2/releases/download/2.1.0/Ecomail_Ecomail_2.1.0.zip
+https://github.com/JakubFilounek/magento-2/releases
 
 # Instalace modulu
 
