@@ -1,0 +1,49 @@
+<?php /** @var \Ecomail\Ecomail\Block\Tracking $block */ ?>
+<?php if ($block->isTrackingEnabled()): ?>
+    <script type="text/javascript">
+        ;(function(p,l,o,w,i,n,g){if(!p[i]){p.GlobalSnowplowNamespace=p.GlobalSnowplowNamespace||[];
+            p.GlobalSnowplowNamespace.push(i);p[i]=function(){(p[i].q=p[i].q||[]).push(arguments)
+            };p[i].q=p[i].q||[];n=l.createElement(o);g=l.getElementsByTagName(o)[0];n.async=1;
+            n.src=w;g.parentNode.insertBefore(n,g)}}(window,document,"script","//d70shl7vidtft.cloudfront.net/ecmtr-2.4.2.js","ecotrack"));
+        window.ecotrack('newTracker', 'cf', 'd2dpiwfhf3tz0r.cloudfront.net', { /* Initialise a tracker */
+            appId: '<?= $block->escapeJs($block->getAppId()) ?>'
+        });
+        window.ecotrack('setUserIdFromLocation', 'ecmid');
+        window.ecotrack('trackPageView');
+        <?php if ($block->shouldTrackProductView()): ?>
+        window.ecotrack(
+            'trackStructEvent',
+            'ECM_PRODUCT_VIEW',
+            '<?= $block->escapeJs($block->getCurrentProductCode()) ?>'
+        );
+        <?php endif; ?>
+    </script>
+
+    <script>
+        require([
+            'Magento_Customer/js/customer-data'
+        ], function(customerData) {
+            customerData.get('ecomail').subscribe(function(items) {
+                if(items && items.email) {
+                    window.ecotrack('setUserId', items.email);
+                    window.ecotrack('trackPageView');
+
+                    customerData.reload('ecomail', true);
+                }
+            });
+    });
+    </script>
+<?php endif; ?>
+<?php if ($block->isFormEnabled()): ?>
+    <script>
+        (function (w,d,s,o,f,js,fjs) {
+            w['ecm-widget']=o;w[o] = w[o] || function () { (w[o].q = w[o].q || []).push(arguments) };
+            js = d.createElement(s), fjs = d.getElementsByTagName(s)[0];
+            js.id = '<?= $block->escapeJs($block->getFormId()) ?>';
+            js.dataset.a = '<?= $block->escapeJs($block->getFormAccount()) ?>';
+            js.src = f;
+            js.async = 1;
+            fjs.parentNode.insertBefore(js, fjs);
+        }(window, document, 'script', 'ecmwidget', 'https://d70shl7vidtft.cloudfront.net/widget.js'));
+    </script>
+<?php endif; ?>

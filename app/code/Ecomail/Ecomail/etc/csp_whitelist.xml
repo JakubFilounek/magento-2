@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<csp_whitelist xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Csp:etc/csp_whitelist.xsd">
+    <policies>
+        <policy id="script-src">
+            <values>
+                <value id="ecomail-cloudfront-script" type="host">d70shl7vidtft.cloudfront.net</value>
+            </values>
+        </policy>
+        <policy id="connect-src">
+            <values>
+                <value id="ecomail-tracker-connect" type="host">d2dpiwfhf3tz0r.cloudfront.net</value>
+                <value id="ecomail-api-connect" type="host">api2.ecomailapp.cz</value>
+                <value id="ecomail-api-new-connect" type="host">apinew.ecomailapp.cz</value>
+            </values>
+        </policy>
+        <policy id="img-src">
+            <values>
+                <value id="ecomail-tracker-pixel" type="host">d2dpiwfhf3tz0r.cloudfront.net</value>
+            </values>
+        </policy>
+    </policies>
+</csp_whitelist>

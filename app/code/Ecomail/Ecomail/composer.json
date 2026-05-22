@@ -1,0 +1,33 @@
+{
+    "name": "ecomail/magento2-ecomail",
+    "description": "System integration with Ecomail.cz services",
+    "license": [
+        "OSL-3.0",
+        "AFL-3.0"
+    ],
+    "authors": [
+        {
+            "name": "Ecomail",
+            "email": "support@ecomail.cz"
+        }
+    ],
+    "require": {
+        "php": ">=8.1 <8.6",
+        "magento/framework": ">=103.0 <105.0",
+        "magento/module-newsletter": "*",
+        "magento/module-sales": "*",
+        "magento/module-customer": "*",
+        "magento/module-catalog": "*",
+        "magento/module-checkout": "*",
+        "ext-curl": "*"
+    },
+    "type": "magento2-module",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Ecomail\\Ecomail\\": ""
+        }
+    }
+}

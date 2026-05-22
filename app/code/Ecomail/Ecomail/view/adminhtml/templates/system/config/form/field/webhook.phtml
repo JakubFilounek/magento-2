@@ -1,0 +1,85 @@
+<?php /** @var \Ecomail\Ecomail\Block\System\Config\Form\Field\Webhook $block */ ?>
+<?php $urlTemplate = $block->getWebhookUrlTemplate(); ?>
+<?php $token = $block->getWebhookToken(); ?>
+
+<div class="ecomail-webhook-tools">
+    <input type="text"
+           id="ecomail_webhook_url_preview"
+           class="input-text"
+           readonly="readonly"
+           value="<?= $block->escapeHtmlAttr(str_replace('__TOKEN__', $token, $urlTemplate)) ?>"/>
+    <div class="ecomail-webhook-actions">
+        <button type="button" class="action-default" id="ecomail_generate_webhook_token">
+            <span><?= $block->escapeHtml(__('Generate Token')) ?></span>
+        </button>
+        <button type="button" class="action-default" id="ecomail_copy_webhook_url">
+            <span><?= $block->escapeHtml(__('Copy URL')) ?></span>
+        </button>
+    </div>
+    <p class="note">
+        <span><?= $block->escapeHtml(__('Use this URL in Ecomail to send subscription status updates back to Magento. Save the configuration after generating a new token.')) ?></span>
+    </p>
+</div>
+
+<style>
+    .ecomail-webhook-tools {
+        max-width: 780px;
+    }
+
+    .ecomail-webhook-tools .input-text {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .ecomail-webhook-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+</style>
+
+<script>
+    require(['jquery'], function ($) {
+        var urlTemplate = '<?= $block->escapeJs($urlTemplate) ?>';
+        var tokenInputSelector = '#ecomail_general_webhook_token';
+        var previewSelector = '#ecomail_webhook_url_preview';
+
+        function randomToken() {
+            var bytes = new Uint8Array(24);
+
+            if (window.crypto && window.crypto.getRandomValues) {
+                window.crypto.getRandomValues(bytes);
+            } else {
+                for (var i = 0; i < bytes.length; i++) {
+                    bytes[i] = Math.floor(Math.random() * 256);
+                }
+            }
+
+            return Array.prototype.map.call(bytes, function (byte) {
+                return ('0' + byte.toString(16)).slice(-2);
+            }).join('');
+        }
+
+        function updatePreview() {
+            var token = $(tokenInputSelector).val() || '';
+            $(previewSelector).val(urlTemplate.replace('__TOKEN__', encodeURIComponent(token)));
+        }
+
+        $('#ecomail_generate_webhook_token').on('click', function () {
+            $(tokenInputSelector).val(randomToken()).trigger('change');
+            updatePreview();
+        });
+
+        $('#ecomail_copy_webhook_url').on('click', function () {
+            updatePreview();
+
+            var input = $(previewSelector).get(0);
+            input.focus();
+            input.select();
+            document.execCommand('copy');
+        });
+
+        $(document).on('input change', tokenInputSelector, updatePreview);
+        updatePreview();
+    });
+</script>

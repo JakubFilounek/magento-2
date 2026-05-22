@@ -1,0 +1,155 @@
+<?php /** @var \Ecomail\Ecomail\Block\System\Config\Form\Field\ApiLog $block */ ?>
+<?php $logs = $block->getRecentLogs(); ?>
+
+<div class="ecomail-api-log-panel">
+    <div class="ecomail-api-log-header">
+        <span class="ecomail-api-log-title"><?= $block->escapeHtml(__('Recent API Requests')) ?></span>
+        <span class="ecomail-api-log-count">
+            <?= $block->escapeHtml(__('%1 shown', count($logs))) ?>
+        </span>
+    </div>
+
+    <?php if (!$logs): ?>
+        <div class="ecomail-api-log-empty">
+            <?= $block->escapeHtml(__('No Ecomail API requests logged yet.')) ?>
+        </div>
+    <?php else: ?>
+        <div class="ecomail-api-log-list">
+            <?php foreach ($logs as $log): ?>
+                <?php $success = (int)$log['success']; ?>
+                <div class="ecomail-api-log-row <?= $success ? 'is-ok' : 'is-error' ?>">
+                    <div class="ecomail-api-log-main">
+                        <span class="ecomail-api-log-method"><?= $block->escapeHtml($log['method']) ?></span>
+                        <span class="ecomail-api-log-endpoint"><?= $block->escapeHtml($log['endpoint']) ?></span>
+                    </div>
+                    <div class="ecomail-api-log-meta">
+                        <span class="ecomail-api-log-time"><?= $block->escapeHtml($log['created_at']) ?></span>
+                        <span class="ecomail-api-log-badge <?= $success ? 'is-ok' : 'is-error' ?>">
+                            <?= $success ? $block->escapeHtml(__('OK')) : $block->escapeHtml(__('Error')) ?>
+                        </span>
+                        <span><?= $block->escapeHtml($log['status_code'] ?: '-') ?></span>
+                        <span><?= $block->escapeHtml($log['duration_ms'] !== null ? $log['duration_ms'] . ' ms' : '-') ?></span>
+                    </div>
+                    <?php if (!empty($log['message'])): ?>
+                        <div class="ecomail-api-log-message">
+                            <?= $block->escapeHtml($log['message']) ?>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
+        </div>
+        <p class="note">
+            <span><?= $block->escapeHtml(__('Showing the last 10 compact request logs. Old log rows are cleaned automatically.')) ?></span>
+        </p>
+    <?php endif; ?>
+</div>
+
+<style>
+    .ecomail-api-log-panel {
+        max-width: 1000px;
+        padding: 16px;
+        border: 1px solid #d6d6d6;
+        border-radius: 4px;
+        background: #fff;
+    }
+
+    .ecomail-api-log-header {
+        align-items: center;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+        margin-bottom: 12px;
+    }
+
+    .ecomail-api-log-title {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .ecomail-api-log-count {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .ecomail-api-log-empty,
+    .ecomail-api-log-row {
+        background: #f8f8f8;
+        border: 1px solid #e3e3e3;
+        border-radius: 4px;
+        padding: 10px 12px;
+    }
+
+    .ecomail-api-log-list {
+        display: grid;
+        gap: 8px;
+    }
+
+    .ecomail-api-log-row {
+        border-left: 4px solid #0a6f64;
+    }
+
+    .ecomail-api-log-row.is-error {
+        border-left-color: #b30000;
+    }
+
+    .ecomail-api-log-main,
+    .ecomail-api-log-meta {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .ecomail-api-log-main {
+        margin-bottom: 5px;
+    }
+
+    .ecomail-api-log-method {
+        background: #303030;
+        border-radius: 3px;
+        color: #fff;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 5px 7px;
+    }
+
+    .ecomail-api-log-endpoint {
+        font-family: Consolas, "Courier New", monospace;
+        overflow-wrap: anywhere;
+    }
+
+    .ecomail-api-log-meta,
+    .ecomail-api-log-message {
+        color: #666;
+        font-size: 12px;
+    }
+
+    .ecomail-api-log-time {
+        color: #303030;
+    }
+
+    .ecomail-api-log-badge {
+        border-radius: 999px;
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 1;
+        padding: 5px 8px;
+        text-transform: uppercase;
+    }
+
+    .ecomail-api-log-badge.is-ok {
+        background: #e3fcef;
+        color: #006400;
+    }
+
+    .ecomail-api-log-badge.is-error {
+        background: #ffe5e5;
+        color: #b30000;
+    }
+
+    .ecomail-api-log-message {
+        margin-top: 5px;
+    }
+</style>

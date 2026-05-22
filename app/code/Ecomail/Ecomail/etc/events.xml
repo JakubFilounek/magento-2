@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="sales_order_place_after">
+        <observer name="ecomail_observer_order_place_after" instance="Ecomail\Ecomail\Observer\OrderPlaced" />
+    </event>
+    <event name="customer_save_after">
+        <observer name="ecomail_observer_customer_save_after" instance="Ecomail\Ecomail\Observer\CustomerUpdated" />
+    </event>
+    <event name="customer_address_save_after">
+        <observer name="ecomail_observer_customer_address_save_after" instance="Ecomail\Ecomail\Observer\CustomerAddressSaved" />
+    </event>
+</config>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Ecomail\Ecomail\Model\QuoteManager">
+        <arguments>
+            <argument name="checkoutSession" xsi:type="object">Magento\Checkout\Model\Session\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Ecomail\Ecomail\Model\Api">
+        <arguments>
+            <argument name="apiLog" xsi:type="object">Ecomail\Ecomail\Model\ApiLog</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Checkout\Api\PaymentInformationManagementInterface">
+        <plugin name="ecomail_payment_information" type="Ecomail\Ecomail\Plugin\Checkout\PaymentInformationManagement" />
+    </type>
+    <type name="Magento\Checkout\Api\GuestPaymentInformationManagementInterface">
+        <plugin name="ecomail_guest_payment_information" type="Ecomail\Ecomail\Plugin\Checkout\GuestPaymentInformationManagement" />
+    </type>
+    <type name="Magento\Checkout\Block\Checkout\LayoutProcessor">
+        <plugin name="ecomail_checkout_layout_processor" type="Ecomail\Ecomail\Plugin\Checkout\LayoutProcessor" />
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="ecomail_sync_existing" xsi:type="object">Ecomail\Ecomail\Console\Command\SyncExisting</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Magento\Newsletter\Model\Subscriber">
+        <plugin name="ecomailSubscriber" type="Ecomail\Ecomail\Plugin\Newsletter\Model\Subscriber" />
+    </type>
+    <type name="Magento\Newsletter\Model\SubscriptionManager">
+        <plugin name="ecomailSubscriptionManager" type="Ecomail\Ecomail\Plugin\Newsletter\Model\SubscriptionManager" />
+    </type>
+</config>
