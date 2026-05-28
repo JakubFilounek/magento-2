@@ -22,6 +22,8 @@ Enabled,Zapnout
 "Cart items","Položky košíku"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Cart items will be sent to Ecomail to support abandoned cart features."
 "Behavior Tracking","Sledování chování"
+"Respect Magento cookie consent","Respektovat souhlas s cookies v Magentu"
+"When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies.","Pokud je v Magentu zapnutý režim omezení cookies, skripty Ecomail se načtou až po souhlasu návštěvníka s cookies."
 "App ID","App ID"
 "Status","Stav"
 "Active","Aktivní"

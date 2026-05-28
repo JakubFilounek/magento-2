@@ -56,6 +56,17 @@ class Tracking extends Template
     /**
      * @return bool
      */
+    public function shouldWaitForCookieConsent(): bool
+    {
+        $storeId = (int)$this->_storeManager->getStore()->getId();
+
+        return $this->helper->respectCookieConsent($storeId)
+            && $this->helper->isCookieRestrictionEnabled($storeId);
+    }
+
+    /**
+     * @return bool
+     */
     public function shouldTrackProductView(): bool
     {
         return $this->isTrackingEnabled()

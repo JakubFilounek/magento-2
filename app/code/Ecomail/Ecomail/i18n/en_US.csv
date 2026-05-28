@@ -22,6 +22,8 @@ Enabled,Enabled
 "Cart items","Cart items"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Cart items will be sent to Ecomail to support abandoned cart features."
 "Behavior Tracking","Behavior Tracking"
+"Respect Magento cookie consent","Respect Magento cookie consent"
+"When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies.","When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies."
 "App ID","App ID"
 "Status","Status"
 "Active","Active"

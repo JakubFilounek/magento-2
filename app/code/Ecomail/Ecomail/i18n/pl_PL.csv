@@ -22,6 +22,8 @@ Enabled,Włączone
 "Cart items","Pozycje koszyka"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Pozycje koszyka zostaną wysłane do Ecomail, aby obsłużyć funkcje porzuconego koszyka."
 "Behavior Tracking","Śledzenie zachowania"
+"Respect Magento cookie consent","Respektuj zgodę na cookies w Magento"
+"When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies.","Gdy w Magento włączony jest tryb ograniczeń cookies, skrypty Ecomail ładują się dopiero po zaakceptowaniu cookies przez odwiedzającego."
 "App ID","App ID"
 "Status","Status"
 "Active","Aktywne"

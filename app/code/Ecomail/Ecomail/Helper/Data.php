@@ -32,11 +32,13 @@ class Data extends AbstractHelper
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_LOCALE = 'ecomail/personal_information/send_locale';
 
     const XML_PATH_ECOMAIL_TRACKING_ENABLED = 'ecomail/tracking/enabled';
+    const XML_PATH_ECOMAIL_TRACKING_RESPECT_COOKIE_CONSENT = 'ecomail/tracking/respect_cookie_consent';
     const XML_PATH_ECOMAIL_TRACKING_APP_ID = 'ecomail/tracking/app_id';
     const XML_PATH_ECOMAIL_TRACKING_PRODUCT_VIEW = 'ecomail/tracking/product_view';
     const XML_PATH_ECOMAIL_TRACKING_FORM_ENABLED = 'ecomail/tracking/form_enabled';
     const XML_PATH_ECOMAIL_TRACKING_FORM_ID = 'ecomail/tracking/form_id';
     const XML_PATH_ECOMAIL_TRACKING_FORM_ACCOUNT = 'ecomail/tracking/form_account';
+    const XML_PATH_MAGENTO_COOKIE_RESTRICTION = 'web/cookie/cookie_restriction';
 
     /**
      * @var EncryptorInterface
@@ -273,6 +275,32 @@ class Data extends AbstractHelper
     {
         return (bool)$this->scopeConfig->getValue(
             self::XML_PATH_ECOMAIL_TRACKING_ENABLED,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
+    /**
+     * @param null $store
+     * @return string|null
+     */
+    public function respectCookieConsent($store = null): bool
+    {
+        return (bool)$this->scopeConfig->getValue(
+            self::XML_PATH_ECOMAIL_TRACKING_RESPECT_COOKIE_CONSENT,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
+    /**
+     * @param null $store
+     * @return bool
+     */
+    public function isCookieRestrictionEnabled($store = null): bool
+    {
+        return (bool)$this->scopeConfig->getValue(
+            self::XML_PATH_MAGENTO_COOKIE_RESTRICTION,
             ScopeInterface::SCOPE_STORE,
             $store
         );

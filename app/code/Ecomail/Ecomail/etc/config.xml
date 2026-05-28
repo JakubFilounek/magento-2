@@ -25,6 +25,7 @@
             </personal_information>
             <tracking>
                 <enabled>0</enabled>
+                <respect_cookie_consent>1</respect_cookie_consent>
                 <product_view>1</product_view>
                 <form_enabled>0</form_enabled>
             </tracking>

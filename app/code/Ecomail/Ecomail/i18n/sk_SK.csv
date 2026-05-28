@@ -22,6 +22,8 @@ Enabled,Povolené
 "Cart items","Položky košíka"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Položky košíka sa odošlú do Ecomailu na podporu funkcií opusteného košíka."
 "Behavior Tracking","Sledovanie správania"
+"Respect Magento cookie consent","Rešpektovať súhlas s cookies v Magente"
+"When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies.","Ak je v Magente zapnutý režim obmedzenia cookies, skripty Ecomail sa načítajú až po súhlase návštevníka s cookies."
 "App ID","App ID"
 "Status","Stav"
 "Active","Aktívne"

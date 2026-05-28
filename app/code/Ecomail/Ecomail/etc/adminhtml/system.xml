@@ -201,6 +201,12 @@
                     <label>Enabled</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="respect_cookie_consent" type="select" translate="label comment" sortOrder="15"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Respect Magento cookie consent</label>
+                    <comment>When Magento Cookie Restriction Mode is enabled, Ecomail browser scripts load only after the visitor accepts cookies.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
                 <field id="app_id" type="text" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>App ID</label>
