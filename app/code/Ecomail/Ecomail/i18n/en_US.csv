@@ -62,3 +62,4 @@ Enabled,Enabled
 "Ecomail Form ID","Ecomail Form ID"
 "The js.id value from the Ecomail form widget code.","The js.id value from the Ecomail form widget code."
 "Ecomail Account Name","Ecomail Account Name"
+"Invalid Ecomail API key.","Invalid Ecomail API key."
