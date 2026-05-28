@@ -126,7 +126,7 @@ class SyncExisting extends Command
         }
 
         if (!$this->helper->syncExisting($storeId)) {
-            $output->writeln('<error>Initial sync is not allowed in Ecomail configuration. Enable "Allow CLI initial sync" first.</error>');
+            $output->writeln('<error>Initial sync is not allowed in Ecomail configuration. Enable "Allow initial sync" first.</error>');
 
             return 1;
         }

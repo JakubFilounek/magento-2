@@ -78,7 +78,7 @@ class TransactionMapper
 
         /** @var OrderItemInterface $orderItem */
         foreach ($order->getAllVisibleItems() as $orderItem) {
-            // We are not interested in child products
+            // Skip child items so configurable and bundle products are not duplicated.
             if ($orderItem->getParentItem()) {
                 continue;
             }
