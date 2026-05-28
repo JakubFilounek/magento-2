@@ -162,7 +162,14 @@
                 </field>
                 <field id="send_orders" type="select" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1"
                        showInStore="1">
-                    <label>Order data</label>
+                    <label>Send order transactions</label>
+                    <comment>Send completed Magento orders as Ecomail transactions.</comment>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+                <field id="update_contacts_from_orders" type="select" translate="label comment" sortOrder="45"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Update contacts from order data</label>
+                    <comment>Use customer details from new orders to create or update Ecomail contacts.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="send_cart_items" type="select" translate="label comment" sortOrder="50" showInDefault="1" showInWebsite="1"

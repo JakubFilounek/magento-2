@@ -135,7 +135,7 @@ class SyncExisting extends Command
             $storeId !== null && $storeId !== '' ? (int)$storeId : null,
             $batchSize,
             !$input->getOption(self::OPTION_ORDERS_ONLY),
-            !$input->getOption(self::OPTION_CUSTOMERS_ONLY) && $this->helper->sendOrders($storeId)
+            !$input->getOption(self::OPTION_CUSTOMERS_ONLY) && $this->helper->sendOrderTransactions($storeId)
         );
 
         $output->writeln(sprintf(

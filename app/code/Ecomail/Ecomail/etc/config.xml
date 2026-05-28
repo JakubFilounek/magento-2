@@ -18,6 +18,7 @@
                 <address_type>1</address_type>
                 <send_dob>1</send_dob>
                 <send_orders>1</send_orders>
+                <update_contacts_from_orders>1</update_contacts_from_orders>
                 <send_cart_items>1</send_cart_items>
                 <send_groups>1</send_groups>
                 <send_locale>1</send_locale>

@@ -25,7 +25,8 @@ class Data extends AbstractHelper
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ADDRESS = 'ecomail/personal_information/send_address';
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_ADDRESS_TYPE = 'ecomail/personal_information/address_type';
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_DOB = 'ecomail/personal_information/send_dob';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDERS = 'ecomail/personal_information/send_orders';
+    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDER_TRANSACTIONS = 'ecomail/personal_information/send_orders';
+    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_UPDATE_CONTACTS_FROM_ORDERS = 'ecomail/personal_information/update_contacts_from_orders';
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_CART_ITEMS = 'ecomail/personal_information/send_cart_items';
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_GROUPS = 'ecomail/personal_information/send_groups';
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_LOCALE = 'ecomail/personal_information/send_locale';
@@ -194,13 +195,35 @@ class Data extends AbstractHelper
      * @param null $store
      * @return bool
      */
-    public function sendOrders($store = null): bool
+    public function sendOrderTransactions($store = null): bool
     {
         return (bool)$this->scopeConfig->getValue(
-            self::XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDERS,
+            self::XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDER_TRANSACTIONS,
             ScopeInterface::SCOPE_STORE,
             $store
         );
+    }
+
+    /**
+     * @param null $store
+     * @return bool
+     */
+    public function updateContactsFromOrders($store = null): bool
+    {
+        return (bool)$this->scopeConfig->getValue(
+            self::XML_PATH_ECOMAIL_PERSONAL_INFORMATION_UPDATE_CONTACTS_FROM_ORDERS,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
+    }
+
+    /**
+     * @param null $store
+     * @return bool
+     */
+    public function sendOrders($store = null): bool
+    {
+        return $this->sendOrderTransactions($store);
     }
 
     /**

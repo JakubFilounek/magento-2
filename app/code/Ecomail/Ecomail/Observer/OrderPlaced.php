@@ -59,12 +59,18 @@ class OrderPlaced implements ObserverInterface
         /** @var OrderInterface $order */
         $order = $observer->getOrder();
 
-        if ($this->helper->isAvailable($order->getStoreId()) && $this->helper->sendOrders($order->getStoreId())) {
-            if (!$this->checkoutSession->getData('ecomail_newsletter_opt_out')) {
+        if ($this->helper->isAvailable($order->getStoreId())) {
+            if (
+                $this->helper->updateContactsFromOrders($order->getStoreId())
+                && !$this->checkoutSession->getData('ecomail_newsletter_opt_out')
+            ) {
                 $this->subscriptionManager->subscribeFromOrder($order);
             }
 
-            $this->transactionManager->createTransaction($order);
+            if ($this->helper->sendOrderTransactions($order->getStoreId())) {
+                $this->transactionManager->createTransaction($order);
+            }
+
             $this->checkoutSession->unsetData('ecomail_newsletter_opt_out');
         }
     }

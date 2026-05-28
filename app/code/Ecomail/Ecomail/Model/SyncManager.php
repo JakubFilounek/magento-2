@@ -118,10 +118,12 @@ class SyncManager
                 'store_id' => $storeId,
                 'status' => self::STATUS_PENDING,
                 'sync_customers' => $syncCustomers ? 1 : 0,
-                'sync_orders' => $syncOrders ? 1 : 0,
+                'sync_orders' => $syncOrders && $this->helper->sendOrderTransactions($storeId) ? 1 : 0,
                 'batch_size' => max(1, min(self::MAX_BATCH_SIZE, $batchSize)),
                 'total_customers' => $syncCustomers ? $this->getCustomerCollection($storeId)->getSize() : 0,
-                'total_orders' => $syncOrders ? $this->getOrderCollection($storeId)->getSize() : 0,
+                'total_orders' => $syncOrders && $this->helper->sendOrderTransactions($storeId)
+                    ? $this->getOrderCollection($storeId)->getSize()
+                    : 0,
                 'last_message' => 'Waiting for cron.',
             ]
         );
