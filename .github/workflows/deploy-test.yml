@@ -38,6 +38,8 @@ jobs:
         shell: bash
         run: |
           tar -czf - app/code/Ecomail/Ecomail | ssh \
+            -o PubkeyAcceptedAlgorithms=+ssh-rsa \
+            -o HostkeyAlgorithms=+ssh-rsa \
             -i ~/.ssh/magento_test_key \
             -p "${{ secrets.MAGENTO_TEST_PORT }}" \
             "${{ secrets.MAGENTO_TEST_USER }}@${{ secrets.MAGENTO_TEST_HOST }}" \
@@ -47,6 +49,8 @@ jobs:
         shell: bash
         run: |
           ssh \
+            -o PubkeyAcceptedAlgorithms=+ssh-rsa \
+            -o HostkeyAlgorithms=+ssh-rsa \
             -i ~/.ssh/magento_test_key \
             -p "${{ secrets.MAGENTO_TEST_PORT }}" \
             "${{ secrets.MAGENTO_TEST_USER }}@${{ secrets.MAGENTO_TEST_HOST }}" \
