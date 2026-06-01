@@ -1,0 +1,47 @@
+name: Deploy test Magento plugin
+
+on:
+  push:
+    branches:
+      - dev
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-test-magento
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to test shop
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        shell: bash
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "${{ secrets.MAGENTO_TEST_SSH_KEY }}" > ~/.ssh/magento_test_key
+          chmod 600 ~/.ssh/magento_test_key
+          ssh-keyscan -p "${{ secrets.MAGENTO_TEST_PORT }}" "${{ secrets.MAGENTO_TEST_HOST }}" >> ~/.ssh/known_hosts
+
+      - name: Upload plugin files
+        shell: bash
+        run: |
+          tar -czf - app/code/Ecomail/Ecomail | ssh \
+            -i ~/.ssh/magento_test_key \
+            -p "${{ secrets.MAGENTO_TEST_PORT }}" \
+            "${{ secrets.MAGENTO_TEST_USER }}@${{ secrets.MAGENTO_TEST_HOST }}" \
+            "cd '${{ secrets.MAGENTO_TEST_PATH }}' && tar -xzf -"
+
+      - name: Run Magento update commands
+        shell: bash
+        run: |
+          ssh \
+            -i ~/.ssh/magento_test_key \
+            -p "${{ secrets.MAGENTO_TEST_PORT }}" \
+            "${{ secrets.MAGENTO_TEST_USER }}@${{ secrets.MAGENTO_TEST_HOST }}" \
+            "cd '${{ secrets.MAGENTO_TEST_PATH }}' && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:upgrade && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:di:compile && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento cache:flush"
