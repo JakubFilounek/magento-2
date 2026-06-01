@@ -26,7 +26,13 @@ jobs:
           chmod 700 ~/.ssh
           printf '%s\n' "${{ secrets.MAGENTO_TEST_SSH_KEY }}" > ~/.ssh/magento_test_key
           chmod 600 ~/.ssh/magento_test_key
+          printf '#!/bin/sh\nprintf %%s "$MAGENTO_TEST_SSH_PASSPHRASE"\n' > ~/.ssh/askpass.sh
+          chmod 700 ~/.ssh/askpass.sh
+          eval "$(ssh-agent -s)"
+          DISPLAY=:0 SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=~/.ssh/askpass.sh ssh-add ~/.ssh/magento_test_key </dev/null
           ssh-keyscan -p "${{ secrets.MAGENTO_TEST_PORT }}" "${{ secrets.MAGENTO_TEST_HOST }}" >> ~/.ssh/known_hosts
+        env:
+          MAGENTO_TEST_SSH_PASSPHRASE: ${{ secrets.MAGENTO_TEST_SSH_PASSPHRASE }}
 
       - name: Upload plugin files
         shell: bash
