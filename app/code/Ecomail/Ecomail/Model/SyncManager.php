@@ -16,7 +16,8 @@ class SyncManager
     private const STATUS_COMPLETED = 'completed';
     private const STATUS_FAILED = 'failed';
     private const LOCK_TTL_MINUTES = 60;
-    private const MAX_BATCH_SIZE = 1000;
+    private const MAX_CUSTOMER_BATCH_SIZE = 3000;
+    private const MAX_ORDER_BATCH_SIZE = 1000;
 
     /**
      * @var ResourceConnection
@@ -98,18 +99,26 @@ class SyncManager
 
     /**
      * @param int|null $storeId
-     * @param int $batchSize
+     * @param int $customerBatchSize
+     * @param int $orderBatchSize
      * @param bool $syncCustomers
      * @param bool $syncOrders
      * @return array
      */
-    public function schedule(?int $storeId, int $batchSize = 100, bool $syncCustomers = true, bool $syncOrders = true): array
-    {
+    public function schedule(
+        ?int $storeId,
+        int $customerBatchSize = self::MAX_CUSTOMER_BATCH_SIZE,
+        int $orderBatchSize = self::MAX_ORDER_BATCH_SIZE,
+        bool $syncCustomers = true,
+        bool $syncOrders = true
+    ): array {
         $active = $this->getActive();
         if ($active) {
             return $active;
         }
 
+        $customerBatchSize = max(1, min(self::MAX_CUSTOMER_BATCH_SIZE, $customerBatchSize));
+        $orderBatchSize = max(1, min(self::MAX_ORDER_BATCH_SIZE, $orderBatchSize));
         $connection = $this->resource->getConnection();
         $table = $this->resource->getTableName('ecomail_sync_state');
         $connection->insert(
@@ -119,7 +128,9 @@ class SyncManager
                 'status' => self::STATUS_PENDING,
                 'sync_customers' => $syncCustomers ? 1 : 0,
                 'sync_orders' => $syncOrders && $this->helper->sendOrderTransactions($storeId) ? 1 : 0,
-                'batch_size' => max(1, min(self::MAX_BATCH_SIZE, $batchSize)),
+                'batch_size' => min($customerBatchSize, $orderBatchSize),
+                'customer_batch_size' => $customerBatchSize,
+                'order_batch_size' => $orderBatchSize,
                 'total_customers' => $syncCustomers ? $this->getCustomerCollection($storeId)->getSize() : 0,
                 'total_orders' => $syncOrders && $this->helper->sendOrderTransactions($storeId)
                     ? $this->getOrderCollection($storeId)->getSize()
@@ -209,7 +220,7 @@ class SyncManager
      */
     private function processCustomerBatch(array $state): int
     {
-        $batchSize = (int)$state['batch_size'];
+        $batchSize = (int)($state['customer_batch_size'] ?? $state['batch_size']);
         $page = (int)floor((int)$state['processed_customers'] / $batchSize) + 1;
         $collection = $this->getCustomerCollection($state['store_id']);
         $collection->setPageSize($batchSize);
@@ -247,7 +258,7 @@ class SyncManager
      */
     private function processOrderBatch(array $state): int
     {
-        $batchSize = (int)$state['batch_size'];
+        $batchSize = (int)($state['order_batch_size'] ?? $state['batch_size']);
         $page = (int)floor((int)$state['processed_orders'] / $batchSize) + 1;
         $collection = $this->getOrderCollection($state['store_id']);
         $collection->setPageSize($batchSize);

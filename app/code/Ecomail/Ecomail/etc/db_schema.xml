@@ -8,6 +8,8 @@
         <column xsi:type="smallint" name="sync_customers" unsigned="true" nullable="false" default="1" comment="Sync Customers"/>
         <column xsi:type="smallint" name="sync_orders" unsigned="true" nullable="false" default="1" comment="Sync Orders"/>
         <column xsi:type="int" name="batch_size" unsigned="true" nullable="false" default="100" comment="Batch Size"/>
+        <column xsi:type="int" name="customer_batch_size" unsigned="true" nullable="false" default="3000" comment="Customer Batch Size"/>
+        <column xsi:type="int" name="order_batch_size" unsigned="true" nullable="false" default="1000" comment="Order Batch Size"/>
         <column xsi:type="int" name="total_customers" unsigned="true" nullable="false" default="0" comment="Total Customers"/>
         <column xsi:type="int" name="processed_customers" unsigned="true" nullable="false" default="0" comment="Processed Customers"/>
         <column xsi:type="int" name="total_orders" unsigned="true" nullable="false" default="0" comment="Total Orders"/>

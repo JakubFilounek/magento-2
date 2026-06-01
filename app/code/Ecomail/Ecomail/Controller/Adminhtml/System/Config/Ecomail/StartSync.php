@@ -3,6 +3,7 @@
 namespace Ecomail\Ecomail\Controller\Adminhtml\System\Config\Ecomail;
 
 use Ecomail\Ecomail\Model\SyncManager;
+use Ecomail\Ecomail\Helper\Data;
 use Magento\Backend\App\Action;
 use Magento\Backend\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
@@ -23,18 +24,26 @@ class StartSync extends Action
     private $syncManager;
 
     /**
+     * @var Data
+     */
+    private $helper;
+
+    /**
      * @param Context $context
      * @param JsonFactory $resultJsonFactory
      * @param SyncManager $syncManager
+     * @param Data $helper
      */
     public function __construct(
         Context $context,
         JsonFactory $resultJsonFactory,
-        SyncManager $syncManager
+        SyncManager $syncManager,
+        Data $helper
     ) {
         parent::__construct($context);
         $this->resultJsonFactory = $resultJsonFactory;
         $this->syncManager = $syncManager;
+        $this->helper = $helper;
     }
 
     /**
@@ -43,10 +52,11 @@ class StartSync extends Action
     public function execute(): ResultInterface
     {
         $storeId = $this->getRequest()->getParam('store_id');
-        $batchSize = (int)$this->getRequest()->getParam('batch_size', 100);
+        $storeId = $storeId !== '' && $storeId !== null ? (int)$storeId : null;
         $state = $this->syncManager->schedule(
-            $storeId !== '' && $storeId !== null ? (int)$storeId : null,
-            max(1, $batchSize),
+            $storeId,
+            $this->helper->getSyncCustomerBatchSize($storeId),
+            $this->helper->getSyncOrderBatchSize($storeId),
             (bool)$this->getRequest()->getParam('sync_customers', true),
             (bool)$this->getRequest()->getParam('sync_orders', true)
         );

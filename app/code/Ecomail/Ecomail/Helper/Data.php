@@ -19,6 +19,8 @@ class Data extends AbstractHelper
     const XML_PATH_ECOMAIL_GENERAL_SYNC_EXISTING = 'ecomail/general/sync_existing';
     const XML_PATH_ECOMAIL_GENERAL_SYNC_INCLUDE_TAGS = 'ecomail/general/sync_include_tags';
     const XML_PATH_ECOMAIL_GENERAL_SYNC_UPDATE_EXISTING = 'ecomail/general/sync_update_existing';
+    const XML_PATH_ECOMAIL_GENERAL_SYNC_CUSTOMER_BATCH_SIZE = 'ecomail/general/sync_customer_batch_size';
+    const XML_PATH_ECOMAIL_GENERAL_SYNC_ORDER_BATCH_SIZE = 'ecomail/general/sync_order_batch_size';
     const XML_PATH_ECOMAIL_GENERAL_CHECKOUT_OPT_OUT_LABEL = 'ecomail/general/checkout_opt_out_label';
 
     const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_NAME = 'ecomail/personal_information/send_name';
@@ -421,6 +423,32 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_STORE,
             $store
         );
+    }
+
+    /**
+     * @param null $store
+     * @return int
+     */
+    public function getSyncCustomerBatchSize($store = null): int
+    {
+        return max(1, min(3000, (int)$this->scopeConfig->getValue(
+            self::XML_PATH_ECOMAIL_GENERAL_SYNC_CUSTOMER_BATCH_SIZE,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        )));
+    }
+
+    /**
+     * @param null $store
+     * @return int
+     */
+    public function getSyncOrderBatchSize($store = null): int
+    {
+        return max(1, min(1000, (int)$this->scopeConfig->getValue(
+            self::XML_PATH_ECOMAIL_GENERAL_SYNC_ORDER_BATCH_SIZE,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        )));
     }
 
     /**

@@ -19,7 +19,10 @@ class SyncExisting extends Command
 {
     private const OPTION_STORE_ID = 'store-id';
     private const OPTION_BATCH_SIZE = 'batch-size';
-    private const MAX_BATCH_SIZE = 1000;
+    private const OPTION_CUSTOMER_BATCH_SIZE = 'customer-batch-size';
+    private const OPTION_ORDER_BATCH_SIZE = 'order-batch-size';
+    private const MAX_CUSTOMER_BATCH_SIZE = 3000;
+    private const MAX_ORDER_BATCH_SIZE = 1000;
     private const OPTION_CUSTOMERS_ONLY = 'customers-only';
     private const OPTION_ORDERS_ONLY = 'orders-only';
 
@@ -104,7 +107,9 @@ class SyncExisting extends Command
         $this->setName('ecomail:sync:existing')
             ->setDescription('Synchronise existing Magento customers and orders to Ecomail.')
             ->addOption(self::OPTION_STORE_ID, null, InputOption::VALUE_OPTIONAL, 'Limit sync to a store ID.')
-            ->addOption(self::OPTION_BATCH_SIZE, null, InputOption::VALUE_OPTIONAL, 'Batch size.', 100)
+            ->addOption(self::OPTION_BATCH_SIZE, null, InputOption::VALUE_OPTIONAL, 'Legacy batch size for both customers and orders.')
+            ->addOption(self::OPTION_CUSTOMER_BATCH_SIZE, null, InputOption::VALUE_OPTIONAL, 'Customer batch size.', 3000)
+            ->addOption(self::OPTION_ORDER_BATCH_SIZE, null, InputOption::VALUE_OPTIONAL, 'Order batch size.', 1000)
             ->addOption(self::OPTION_CUSTOMERS_ONLY, null, InputOption::VALUE_NONE, 'Synchronise customers only.')
             ->addOption(self::OPTION_ORDERS_ONLY, null, InputOption::VALUE_NONE, 'Synchronise orders only.');
     }
@@ -117,7 +122,16 @@ class SyncExisting extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $storeId = $input->getOption(self::OPTION_STORE_ID);
-        $batchSize = max(1, min(self::MAX_BATCH_SIZE, (int)$input->getOption(self::OPTION_BATCH_SIZE)));
+        $legacyBatchSize = $input->getOption(self::OPTION_BATCH_SIZE);
+        $customerBatchSize = $legacyBatchSize !== null
+            ? (int)$legacyBatchSize
+            : (int)$input->getOption(self::OPTION_CUSTOMER_BATCH_SIZE);
+        $orderBatchSize = $legacyBatchSize !== null
+            ? (int)$legacyBatchSize
+            : (int)$input->getOption(self::OPTION_ORDER_BATCH_SIZE);
+
+        $customerBatchSize = max(1, min(self::MAX_CUSTOMER_BATCH_SIZE, $customerBatchSize));
+        $orderBatchSize = max(1, min(self::MAX_ORDER_BATCH_SIZE, $orderBatchSize));
 
         if (!$this->helper->isAvailable($storeId)) {
             $output->writeln('<error>Ecomail is not enabled or subscriber list is not configured for this scope.</error>');
@@ -133,7 +147,8 @@ class SyncExisting extends Command
 
         $state = $this->syncManager->schedule(
             $storeId !== null && $storeId !== '' ? (int)$storeId : null,
-            $batchSize,
+            $customerBatchSize,
+            $orderBatchSize,
             !$input->getOption(self::OPTION_ORDERS_ONLY),
             !$input->getOption(self::OPTION_CUSTOMERS_ONLY) && $this->helper->sendOrderTransactions($storeId)
         );

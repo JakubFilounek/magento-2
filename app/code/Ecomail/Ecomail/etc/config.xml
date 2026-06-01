@@ -10,6 +10,8 @@
                 <sync_existing>0</sync_existing>
                 <sync_include_tags>0</sync_include_tags>
                 <sync_update_existing>1</sync_update_existing>
+                <sync_customer_batch_size>3000</sync_customer_batch_size>
+                <sync_order_batch_size>1000</sync_order_batch_size>
                 <checkout_opt_out_label>Do not subscribe me to the newsletter</checkout_opt_out_label>
             </general>
             <personal_information>

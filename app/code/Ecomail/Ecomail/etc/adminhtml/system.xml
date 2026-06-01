@@ -93,7 +93,27 @@
                     </depends>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="sync_tools" type="label" translate="label" sortOrder="75" showInDefault="1"
+                <field id="sync_customer_batch_size" type="select" translate="label comment" sortOrder="75"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Subscriber sync batch size</label>
+                    <comment>Maximum 3000 subscribers per Ecomail request. Subscribers above this limit are ignored by Ecomail.</comment>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                        <field id="ecomail/general/sync_existing">1</field>
+                    </depends>
+                    <source_model>Ecomail\Ecomail\Model\Config\Source\SubscriberBatchSize</source_model>
+                </field>
+                <field id="sync_order_batch_size" type="select" translate="label comment" sortOrder="76"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Transaction sync batch size</label>
+                    <comment>Maximum 1000 transactions per Ecomail request. Bulk transaction imports do not trigger automations with the Makes an order trigger.</comment>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                        <field id="ecomail/general/sync_existing">1</field>
+                    </depends>
+                    <source_model>Ecomail\Ecomail\Model\Config\Source\TransactionBatchSize</source_model>
+                </field>
+                <field id="sync_tools" type="label" translate="label" sortOrder="77" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Initial Sync</label>
                     <frontend_model>Ecomail\Ecomail\Block\System\Config\Form\Field\InitialSync</frontend_model>
