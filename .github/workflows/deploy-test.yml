@@ -30,6 +30,8 @@ jobs:
           chmod 700 ~/.ssh/askpass.sh
           eval "$(ssh-agent -s)"
           DISPLAY=:0 SSH_ASKPASS_REQUIRE=force SSH_ASKPASS=~/.ssh/askpass.sh ssh-add ~/.ssh/magento_test_key </dev/null
+          echo "SSH_AUTH_SOCK=$SSH_AUTH_SOCK" >> "$GITHUB_ENV"
+          echo "SSH_AGENT_PID=$SSH_AGENT_PID" >> "$GITHUB_ENV"
           ssh-keyscan -p "${{ secrets.MAGENTO_TEST_PORT }}" "${{ secrets.MAGENTO_TEST_HOST }}" >> ~/.ssh/known_hosts
         env:
           MAGENTO_TEST_SSH_PASSPHRASE: ${{ secrets.MAGENTO_TEST_SSH_PASSPHRASE }}
