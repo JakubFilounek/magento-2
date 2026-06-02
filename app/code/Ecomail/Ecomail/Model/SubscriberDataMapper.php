@@ -15,6 +15,7 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
 
 class SubscriberDataMapper
 {
@@ -48,6 +49,7 @@ class SubscriberDataMapper
      * @param CustomerRepositoryInterface $customerRepository
      * @param AddressRepositoryInterface $addressRepository
      * @param GroupRepositoryInterface $groupRepository
+     * @param StoreManagerInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
      * @param Data $helper
      */
@@ -55,6 +57,7 @@ class SubscriberDataMapper
         CustomerRepositoryInterface $customerRepository,
         AddressRepositoryInterface $addressRepository,
         GroupRepositoryInterface $groupRepository,
+        StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
         Data $helper
     ) {
