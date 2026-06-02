@@ -103,6 +103,8 @@ class SyncManager
      * @param int $orderBatchSize
      * @param bool $syncCustomers
      * @param bool $syncOrders
+     * @param bool|null $updateExisting
+     * @param bool|null $includeTags
      * @return array
      */
     public function schedule(
@@ -110,7 +112,9 @@ class SyncManager
         int $customerBatchSize = self::MAX_CUSTOMER_BATCH_SIZE,
         int $orderBatchSize = self::MAX_ORDER_BATCH_SIZE,
         bool $syncCustomers = true,
-        bool $syncOrders = true
+        bool $syncOrders = true,
+        ?bool $updateExisting = null,
+        ?bool $includeTags = null
     ): array {
         $active = $this->getActive();
         if ($active) {
@@ -128,6 +132,8 @@ class SyncManager
                 'status' => self::STATUS_PENDING,
                 'sync_customers' => $syncCustomers ? 1 : 0,
                 'sync_orders' => $syncOrders && $this->helper->sendOrderTransactions($storeId) ? 1 : 0,
+                'update_existing' => ($updateExisting ?? $this->helper->syncUpdateExisting($storeId)) ? 1 : 0,
+                'include_tags' => ($includeTags ?? $this->helper->syncIncludeTags($storeId)) ? 1 : 0,
                 'batch_size' => min($customerBatchSize, $orderBatchSize),
                 'customer_batch_size' => $customerBatchSize,
                 'order_batch_size' => $orderBatchSize,
@@ -244,8 +250,8 @@ class SyncManager
         if ($batch) {
             $this->sendSubscriberBatch(
                 $batch,
-                $this->helper->syncUpdateExisting($state['store_id']),
-                $this->helper->syncIncludeTags($state['store_id'])
+                (bool)($state['update_existing'] ?? $this->helper->syncUpdateExisting($state['store_id'])),
+                (bool)($state['include_tags'] ?? $this->helper->syncIncludeTags($state['store_id']))
             );
         }
 

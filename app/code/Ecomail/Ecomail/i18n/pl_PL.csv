@@ -19,6 +19,8 @@ Enabled,Włączone
 "Send completed Magento orders as Ecomail transactions.","Wysyłaj zakończone zamówienia Magento jako transakcje Ecomail."
 "Update contacts from order data","Aktualizuj kontakty z danych zamówień"
 "Use customer details from new orders to create or update Ecomail contacts.","Używaj danych klienta z nowych zamówień do tworzenia lub aktualizowania kontaktów w Ecomail."
+"Send tags during initial sync","Wysyłaj tagi podczas synchronizacji początkowej"
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends customer group, store, and website tags. Warning: Ecomail can replace all tags on existing contacts.","Wysyła tagi magento i magento_newsletter. Jeśli opcja Customer groups to tags jest włączona, wysyła też tagi grupy klienta, sklepu i witryny. Uwaga: Ecomail może zastąpić wszystkie tagi istniejących kontaktów."
 "Cart items","Pozycje koszyka"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Pozycje koszyka zostaną wysłane do Ecomail, aby obsłużyć funkcje porzuconego koszyka."
 "Behavior Tracking","Śledzenie zachowania"

@@ -19,6 +19,8 @@ Enabled,Enabled
 "Send completed Magento orders as Ecomail transactions.","Send completed Magento orders as Ecomail transactions."
 "Update contacts from order data","Update contacts from order data"
 "Use customer details from new orders to create or update Ecomail contacts.","Use customer details from new orders to create or update Ecomail contacts."
+"Send tags during initial sync","Send tags during initial sync"
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends customer group, store, and website tags. Warning: Ecomail can replace all tags on existing contacts.","Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends customer group, store, and website tags. Warning: Ecomail can replace all tags on existing contacts."
 "Cart items","Cart items"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Cart items will be sent to Ecomail to support abandoned cart features."
 "Behavior Tracking","Behavior Tracking"

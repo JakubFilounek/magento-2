@@ -55,12 +55,46 @@ class StartSync extends Action
         $storeId = $storeId !== '' && $storeId !== null ? (int)$storeId : null;
         $state = $this->syncManager->schedule(
             $storeId,
-            $this->helper->getSyncCustomerBatchSize($storeId),
-            $this->helper->getSyncOrderBatchSize($storeId),
+            $this->getIntegerParam('customer_batch_size', $this->helper->getSyncCustomerBatchSize($storeId)),
+            $this->getIntegerParam('order_batch_size', $this->helper->getSyncOrderBatchSize($storeId)),
             (bool)$this->getRequest()->getParam('sync_customers', true),
-            (bool)$this->getRequest()->getParam('sync_orders', true)
+            (bool)$this->getRequest()->getParam('sync_orders', true),
+            $this->getBooleanParam('update_existing', $this->helper->syncUpdateExisting($storeId)),
+            $this->getBooleanParam('include_tags', $this->helper->syncIncludeTags($storeId))
         );
 
         return $this->resultJsonFactory->create()->setData(['state' => $state]);
+    }
+
+    /**
+     * @param string $name
+     * @param bool $default
+     * @return bool
+     */
+    private function getBooleanParam(string $name, bool $default): bool
+    {
+        $value = $this->getRequest()->getParam($name, null);
+
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        return (bool)(int)$value;
+    }
+
+    /**
+     * @param string $name
+     * @param int $default
+     * @return int
+     */
+    private function getIntegerParam(string $name, int $default): int
+    {
+        $value = $this->getRequest()->getParam($name, null);
+
+        if ($value === null || $value === '') {
+            return $default;
+        }
+
+        return (int)$value;
     }
 }

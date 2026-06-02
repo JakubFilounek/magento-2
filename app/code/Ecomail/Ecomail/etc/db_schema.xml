@@ -7,6 +7,8 @@
         <column xsi:type="varchar" name="status" nullable="false" length="32" default="pending" comment="Status"/>
         <column xsi:type="smallint" name="sync_customers" unsigned="true" nullable="false" default="1" comment="Sync Customers"/>
         <column xsi:type="smallint" name="sync_orders" unsigned="true" nullable="false" default="1" comment="Sync Orders"/>
+        <column xsi:type="smallint" name="update_existing" unsigned="true" nullable="false" default="1" comment="Update Existing Contacts"/>
+        <column xsi:type="smallint" name="include_tags" unsigned="true" nullable="false" default="0" comment="Include Tags"/>
         <column xsi:type="int" name="batch_size" unsigned="true" nullable="false" default="100" comment="Batch Size"/>
         <column xsi:type="int" name="customer_batch_size" unsigned="true" nullable="false" default="3000" comment="Customer Batch Size"/>
         <column xsi:type="int" name="order_batch_size" unsigned="true" nullable="false" default="1000" comment="Order Batch Size"/>

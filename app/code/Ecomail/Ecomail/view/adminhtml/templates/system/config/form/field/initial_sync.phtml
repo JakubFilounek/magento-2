@@ -187,6 +187,13 @@
             });
         }
 
+        function configValue(group, field) {
+            var selector = '[name="groups[' + group + '][fields][' + field + '][value]"]';
+            var element = $(selector);
+
+            return element.length ? element.val() : '';
+        }
+
         $('#ecomail_start_sync').on('click', function () {
             $.ajax({
                 url: '<?= $block->escapeJs($block->getStartUrl()) ?>',
@@ -196,7 +203,11 @@
                     form_key: window.FORM_KEY,
                     store_id: '<?= $block->escapeJs((string)$block->getStoreId()) ?>',
                     sync_customers: 1,
-                    sync_orders: 1
+                    sync_orders: 1,
+                    update_existing: configValue('general', 'sync_update_existing'),
+                    include_tags: configValue('general', 'sync_include_tags'),
+                    customer_batch_size: configValue('general', 'sync_customer_batch_size'),
+                    order_batch_size: configValue('general', 'sync_order_batch_size')
                 },
                 success: function (response) {
                     render(response.state || {});

@@ -19,6 +19,8 @@ Enabled,Povolené
 "Send completed Magento orders as Ecomail transactions.","Odosielať dokončené objednávky z Magenta ako transakcie Ecomail."
 "Update contacts from order data","Aktualizovať kontakty z objednávok"
 "Use customer details from new orders to create or update Ecomail contacts.","Použiť údaje zákazníka z nových objednávok na vytvorenie alebo aktualizáciu kontaktov v Ecomaili."
+"Send tags during initial sync","Posielať tagy pri úvodnej synchronizácii"
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends customer group, store, and website tags. Warning: Ecomail can replace all tags on existing contacts.","Odosiela tagy magento a magento_newsletter. Ak je zapnuté Customer groups to tags, odosiela aj tagy zákazníckej skupiny, obchodu a webu. Pozor: Ecomail môže nahradiť všetky tagy pri existujúcich kontaktoch."
 "Cart items","Položky košíka"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Položky košíka sa odošlú do Ecomailu na podporu funkcií opusteného košíka."
 "Behavior Tracking","Sledovanie správania"

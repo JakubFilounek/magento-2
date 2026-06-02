@@ -150,7 +150,9 @@ class SyncExisting extends Command
             $customerBatchSize,
             $orderBatchSize,
             !$input->getOption(self::OPTION_ORDERS_ONLY),
-            !$input->getOption(self::OPTION_CUSTOMERS_ONLY) && $this->helper->sendOrderTransactions($storeId)
+            !$input->getOption(self::OPTION_CUSTOMERS_ONLY) && $this->helper->sendOrderTransactions($storeId),
+            $this->helper->syncUpdateExisting($storeId),
+            $this->helper->syncIncludeTags($storeId)
         );
 
         $output->writeln(sprintf(
