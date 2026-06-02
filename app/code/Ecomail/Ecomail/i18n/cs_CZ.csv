@@ -20,7 +20,7 @@ Enabled,Zapnout
 "Update contacts from order data","Aktualizovat kontakty z objednávek"
 "Use customer details from new orders to create or update Ecomail contacts.","Použít údaje zákazníka z nových objednávek k vytvoření nebo aktualizaci kontaktů v Ecomailu."
 "Send tags during initial sync","Posílat štítky při úvodní synchronizaci"
-"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends customer group, store, and website tags. Warning: Ecomail can replace all tags on existing contacts.","Odesílá štítky magento a magento_newsletter. Pokud je zapnuté Customer groups to tags, odesílá také štítky zákaznické skupiny, obchodu a webu. Pozor: Ecomail může nahradit všechny štítky u existujících kontaktů."
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag. Warning: Ecomail can replace all tags on existing contacts.","Odesílá štítky magento a magento_newsletter. Pokud je zapnuté Customer groups to tags, odesílá také štítek zákaznické skupiny. Pozor: Ecomail může nahradit všechny štítky u existujících kontaktů."
 "Cart items","Položky košíku"
 "Cart items will be sent to Ecomail to support abandoned cart features.","Cart items will be sent to Ecomail to support abandoned cart features."
 "Behavior Tracking","Sledování chování"

@@ -12,7 +12,7 @@
 * replaced legacy Zend HTTP transport and removed global Magento HTTP preferences
 * added encrypted API key config handling
 * added Ecomail form widget settings and product-view tracking
-* added customer group/store/website tags and MAGENTO_LANGUAGE custom field support
+* added customer group tags and MAGENTO_LANGUAGE custom field support
 * added customer and address update synchronization
 * added token-protected inbound subscriber webhook
 * added CLI command for initial customer and order synchronization

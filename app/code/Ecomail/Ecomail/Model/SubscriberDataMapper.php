@@ -15,7 +15,6 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Newsletter\Model\Subscriber;
 use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Store\Model\ScopeInterface;
-use Magento\Store\Model\StoreManagerInterface;
 
 class SubscriberDataMapper
 {
@@ -35,11 +34,6 @@ class SubscriberDataMapper
     private $groupRepository;
 
     /**
-     * @var StoreManagerInterface
-     */
-    private $storeManager;
-
-    /**
      * @var ScopeConfigInterface
      */
     private $scopeConfig;
@@ -54,7 +48,6 @@ class SubscriberDataMapper
      * @param CustomerRepositoryInterface $customerRepository
      * @param AddressRepositoryInterface $addressRepository
      * @param GroupRepositoryInterface $groupRepository
-     * @param StoreManagerInterface $storeManager
      * @param ScopeConfigInterface $scopeConfig
      * @param Data $helper
      */
@@ -62,14 +55,12 @@ class SubscriberDataMapper
         CustomerRepositoryInterface $customerRepository,
         AddressRepositoryInterface $addressRepository,
         GroupRepositoryInterface $groupRepository,
-        StoreManagerInterface $storeManager,
         ScopeConfigInterface $scopeConfig,
         Data $helper
     ) {
         $this->customerRepository = $customerRepository;
         $this->addressRepository = $addressRepository;
         $this->groupRepository = $groupRepository;
-        $this->storeManager = $storeManager;
         $this->scopeConfig = $scopeConfig;
         $this->helper = $helper;
     }
@@ -277,14 +268,6 @@ class SubscriberDataMapper
                 } catch (Exception $e) {
                     // Missing groups should not block subscription sync.
                 }
-            }
-
-            try {
-                $store = $this->storeManager->getStore($storeId);
-                $tags[] = 'magento_store_' . $store->getCode();
-                $tags[] = 'magento_website_' . $store->getWebsite()->getCode();
-            } catch (Exception $e) {
-                // Store context tags are best-effort enrichment.
             }
         }
 
