@@ -54,4 +54,4 @@ jobs:
             -o HostkeyAlgorithms=+ssh-rsa \
             -p "${{ secrets.MAGENTO_TEST_PORT }}" \
             "${{ secrets.MAGENTO_TEST_USER }}@${{ secrets.MAGENTO_TEST_HOST }}" \
-            "cd '${{ secrets.MAGENTO_TEST_PATH }}' && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:upgrade && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:di:compile && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento cache:flush"
+            "cd '${{ secrets.MAGENTO_TEST_PATH }}' && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:upgrade && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:di:compile && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento setup:static-content:deploy -f en_US && '${{ secrets.MAGENTO_TEST_PHP }}' bin/magento cache:flush"
