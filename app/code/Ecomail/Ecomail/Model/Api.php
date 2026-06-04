@@ -61,7 +61,11 @@ class Api
      */
     public function addSubscriberToList(array $subscriberData): array
     {
-        return $this->request('POST', $this->buildListUrl('subscribe'), $subscriberData);
+        return $this->request(
+            'POST',
+            $this->buildListUrl('subscribe'),
+            $this->prepareSubscriberPayload($subscriberData)
+        );
     }
 
     /**
@@ -157,13 +161,9 @@ class Api
      */
     public function updateSubscriberInList(array $subscriberData): array
     {
-        $data = $subscriberData['subscriber_data'] ?? $subscriberData;
-        $email = $data['email'] ?? $subscriberData['email'] ?? '';
-        $this->validateEmail((string)$email);
-
-        if ($email && isset($data['tags']) && is_array($data['tags'])) {
-            $data['tags'] = $this->mergeSubscriberTags($email, $data['tags']);
-        }
+        $subscriberData = $this->prepareSubscriberPayload($subscriberData);
+        $data = $subscriberData['subscriber_data'];
+        $email = $data['email'];
 
         return $this->request(
             'PUT',
@@ -405,6 +405,26 @@ class Api
         }
 
         return $subscribers;
+    }
+
+    /**
+     * @param array $subscriberData
+     * @return array
+     * @throws IntegrationException
+     */
+    private function prepareSubscriberPayload(array $subscriberData): array
+    {
+        $data = $subscriberData['subscriber_data'] ?? $subscriberData;
+        $email = $data['email'] ?? $subscriberData['email'] ?? '';
+        $this->validateEmail((string)$email);
+
+        if (isset($data['tags']) && is_array($data['tags'])) {
+            $data['tags'] = $this->mergeSubscriberTags((string)$email, $data['tags']);
+        }
+
+        $subscriberData['subscriber_data'] = $data;
+
+        return $subscriberData;
     }
 
     /**
