@@ -46,10 +46,18 @@ class TransactionManager
     public function createTransaction(OrderInterface $order)
     {
         try {
-            $this->api->createTransaction($this->transactionMapper->map($order));
+            $transactionData = $this->transactionMapper->map($order);
+        } catch (Exception $e) {
+            $this->logger->error('Failed to map Ecomail transaction.', [$e]);
+
+            return;
+        }
+
+        try {
+            $this->api->createTransaction($transactionData);
         } catch (Exception $e) {
             try {
-                $this->api->updateTransaction($this->transactionMapper->map($order));
+                $this->api->updateTransaction($transactionData);
             } catch (Exception $updateException) {
                 $this->logger->error('Failed to create or update Ecomail transaction.', [$e, $updateException]);
             }

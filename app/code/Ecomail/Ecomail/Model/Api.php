@@ -13,6 +13,7 @@ class Api
     const API_NEW_URL = 'https://apinew.ecomailapp.cz/';
     const STATUS_OK = 200;
     const STATUS_CREATED = 201;
+    const STATUS_NO_CONTENT = 204;
     const UNKNOWN_ERROR_MESSAGE = 'UNKNOWN ERROR';
     const MAX_BULK_SUBSCRIBERS = 3000;
     const MAX_BULK_TRANSACTIONS = 1000;
@@ -70,6 +71,8 @@ class Api
      */
     public function removeSubscriberFromList(string $email): array
     {
+        $this->validateEmail($email);
+
         return $this->request('DELETE', $this->buildListUrl('unsubscribe'), ['email' => $email]);
     }
 
@@ -80,6 +83,8 @@ class Api
      */
     public function getSubscriber(string $email): array
     {
+        $this->validateEmail($email);
+
         return $this->request('GET', self::API_URL . 'subscribers/' . rawurlencode($email));
     }
 
@@ -117,6 +122,8 @@ class Api
      */
     public function createTransaction(array $data): array
     {
+        $this->validateTransaction($data);
+
         return $this->request('POST', self::API_URL . 'tracker/transaction', $data);
     }
 
@@ -127,6 +134,7 @@ class Api
      */
     public function updateTransaction(array $data): array
     {
+        $this->validateTransaction($data);
         $orderId = $data['transaction']['order_id'] ?? '';
 
         return $this->request('PUT', self::API_URL . 'tracker/transaction/' . rawurlencode((string)$orderId), $data);
@@ -151,6 +159,7 @@ class Api
     {
         $data = $subscriberData['subscriber_data'] ?? $subscriberData;
         $email = $data['email'] ?? $subscriberData['email'] ?? '';
+        $this->validateEmail((string)$email);
 
         if ($email && isset($data['tags']) && is_array($data['tags'])) {
             $data['tags'] = $this->mergeSubscriberTags($email, $data['tags']);
@@ -177,7 +186,11 @@ class Api
         bool $includeTags = false
     ): array
     {
-        $subscriberData = array_slice($subscriberData, 0, self::MAX_BULK_SUBSCRIBERS);
+        $subscriberData = array_slice($this->filterValidSubscribers($subscriberData), 0, self::MAX_BULK_SUBSCRIBERS);
+
+        if (!$subscriberData) {
+            throw new IntegrationException(__('Ecomail api error: No valid subscribers to send.'));
+        }
 
         return $this->request(
             'POST',
@@ -199,10 +212,16 @@ class Api
      */
     public function bulkOrders(array $transactionData): array
     {
+        $transactionData = array_slice($this->filterValidTransactions($transactionData), 0, self::MAX_BULK_TRANSACTIONS);
+
+        if (!$transactionData) {
+            throw new IntegrationException(__('Ecomail api error: No valid transactions to send.'));
+        }
+
         return $this->request(
             'POST',
             self::API_URL . 'tracker/transaction-bulk',
-            ['transaction_data' => array_slice($transactionData, 0, self::MAX_BULK_TRANSACTIONS)]
+            ['transaction_data' => $transactionData]
         );
     }
 
@@ -247,7 +266,7 @@ class Api
             try {
                 $response = $this->jsonSerializer->unserialize($body);
             } catch (\InvalidArgumentException $e) {
-                if ($status === self::STATUS_OK || $status === self::STATUS_CREATED) {
+                if ($this->isSuccessfulStatus($status)) {
                     return [];
                 }
 
@@ -263,7 +282,7 @@ class Api
             $response = [];
         }
 
-        if ($status !== self::STATUS_OK && $status !== self::STATUS_CREATED) {
+        if (!$this->isSuccessfulStatus($status)) {
             throw new IntegrationException(__($this->getErrorMessage($response)));
         }
 
@@ -288,6 +307,19 @@ class Api
             $apiKey = $this->helper->getApiKey();
         }
 
+        if (trim((string)$apiKey) === '') {
+            throw new IntegrationException(__('Ecomail api error: API key is not configured.'));
+        }
+
+        $payload = null;
+        if ($data !== null && $method !== 'GET') {
+            try {
+                $payload = $this->jsonSerializer->serialize($data);
+            } catch (\InvalidArgumentException $e) {
+                throw new IntegrationException(__('Ecomail api error: Unable to encode request data.'));
+            }
+        }
+
         $ch = curl_init($uri);
 
         if ($ch === false) {
@@ -305,8 +337,8 @@ class Api
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
-        if ($data !== null && $method !== 'GET') {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $this->jsonSerializer->serialize($data));
+        if ($payload !== null) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
         }
 
         try {
@@ -352,7 +384,11 @@ class Api
             return;
         }
 
-        $this->apiLog->log($method, $uri, $status, $success, $durationMs, $message);
+        try {
+            $this->apiLog->log($method, $uri, $status, $success, $durationMs, $message);
+        } catch (\Exception $e) {
+            // API logging must not affect the storefront, checkout, or sync result.
+        }
     }
 
     /**
@@ -407,7 +443,13 @@ class Api
      */
     private function buildListUrl(string $path): string
     {
-        return self::API_URL . 'lists/' . $this->helper->getSubscriberList() . '/' . $path;
+        $subscriberList = trim((string)$this->helper->getSubscriberList());
+
+        if ($subscriberList === '') {
+            throw new IntegrationException(__('Ecomail api error: Subscriber list is not configured.'));
+        }
+
+        return self::API_URL . 'lists/' . rawurlencode($subscriberList) . '/' . $path;
     }
 
     /**
@@ -421,18 +463,102 @@ class Api
         }
 
         if (isset($response['errors'])) {
-            $messages = [];
+            $messages = $this->flattenErrorMessages($response['errors']);
 
-            foreach ($response['errors'] as $errorType) {
-                foreach ($errorType as $error) {
-                    $messages[] = $error;
-                }
+            if ($messages) {
+                return __('Ecomail api error: ') . implode(', ', $messages);
             }
-
-            return __('Ecomail api error: ') . implode(', ', $messages);
         }
 
         return self::UNKNOWN_ERROR_MESSAGE;
+    }
+
+    /**
+     * @param int $status
+     * @return bool
+     */
+    private function isSuccessfulStatus(int $status): bool
+    {
+        return in_array($status, [self::STATUS_OK, self::STATUS_CREATED, self::STATUS_NO_CONTENT], true);
+    }
+
+    /**
+     * @param string $email
+     * @throws IntegrationException
+     */
+    private function validateEmail(string $email): void
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new IntegrationException(__('Ecomail api error: Invalid subscriber email.'));
+        }
+    }
+
+    /**
+     * @param array $transaction
+     * @throws IntegrationException
+     */
+    private function validateTransaction(array $transaction): void
+    {
+        $data = $transaction['transaction'] ?? [];
+
+        if (empty($data['order_id']) || empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL)) {
+            throw new IntegrationException(__('Ecomail api error: Invalid transaction data.'));
+        }
+    }
+
+    /**
+     * @param array $subscribers
+     * @return array
+     */
+    private function filterValidSubscribers(array $subscribers): array
+    {
+        return array_values(array_filter($subscribers, function ($subscriber) {
+            return is_array($subscriber)
+                && !empty($subscriber['email'])
+                && filter_var($subscriber['email'], FILTER_VALIDATE_EMAIL);
+        }));
+    }
+
+    /**
+     * @param array $transactions
+     * @return array
+     */
+    private function filterValidTransactions(array $transactions): array
+    {
+        return array_values(array_filter($transactions, function ($transaction) {
+            $data = is_array($transaction) ? ($transaction['transaction'] ?? []) : [];
+
+            return is_array($data)
+                && !empty($data['order_id'])
+                && !empty($data['email'])
+                && filter_var($data['email'], FILTER_VALIDATE_EMAIL);
+        }));
+    }
+
+    /**
+     * @param mixed $errors
+     * @return array
+     */
+    private function flattenErrorMessages($errors): array
+    {
+        if (is_scalar($errors)) {
+            return [(string)$errors];
+        }
+
+        if (!is_array($errors)) {
+            return [];
+        }
+
+        $messages = [];
+        foreach ($errors as $error) {
+            foreach ($this->flattenErrorMessages($error) as $message) {
+                if ($message !== '') {
+                    $messages[] = $message;
+                }
+            }
+        }
+
+        return $messages;
     }
 
     /**
@@ -441,7 +567,7 @@ class Api
      */
     private function getResponseSnippet(string $body): string
     {
-        $body = trim(preg_replace('/\s+/', ' ', $body));
+        $body = trim((string)preg_replace('/\s+/', ' ', $body));
 
         if ($body === '') {
             return self::UNKNOWN_ERROR_MESSAGE;

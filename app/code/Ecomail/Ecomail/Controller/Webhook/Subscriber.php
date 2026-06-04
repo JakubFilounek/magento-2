@@ -85,7 +85,7 @@ class Subscriber implements HttpPostActionInterface, CsrfAwareActionInterface
     public function execute(): ResultInterface
     {
         $result = $this->resultJsonFactory->create();
-        $storeId = $this->request->getParam('store');
+        $storeId = $this->getStoreId();
         $expectedToken = (string)$this->helper->getWebhookToken($storeId);
         $providedToken = (string)$this->request->getParam('token');
 
@@ -94,11 +94,20 @@ class Subscriber implements HttpPostActionInterface, CsrfAwareActionInterface
         }
 
         $payload = json_decode((string)$this->request->getContent(), true);
+        if (!is_array($payload) || json_last_error() !== JSON_ERROR_NONE) {
+            return $result->setHttpResponseCode(400)->setData(['error' => 'Invalid JSON payload']);
+        }
+
         $email = $payload['payload']['email'] ?? null;
         $status = $payload['payload']['status'] ?? null;
 
-        if (!$email || !$status) {
+        if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL) || !$status) {
             return $result->setHttpResponseCode(400)->setData(['error' => 'Missing email or status']);
+        }
+
+        $subscriberStatus = $this->mapSubscriberStatus((string)$status);
+        if ($subscriberStatus === null) {
+            return $result->setHttpResponseCode(400)->setData(['error' => 'Unsupported subscriber status']);
         }
 
         try {
@@ -109,11 +118,7 @@ class Subscriber implements HttpPostActionInterface, CsrfAwareActionInterface
                 return $result->setData(['updated' => false, 'message' => 'Subscriber not found']);
             }
 
-            $subscriber->setStatus(
-                strtoupper((string)$status) === 'SUBSCRIBED'
-                    ? SubscriberModel::STATUS_SUBSCRIBED
-                    : SubscriberModel::STATUS_UNSUBSCRIBED
-            );
+            $subscriber->setStatus($subscriberStatus);
             $subscriber->save();
         } catch (\Exception $e) {
             $this->logger->error('Failed to process Ecomail webhook.', [$e]);
@@ -122,5 +127,34 @@ class Subscriber implements HttpPostActionInterface, CsrfAwareActionInterface
         }
 
         return $result->setData(['updated' => true]);
+    }
+
+    /**
+     * @return int|null
+     */
+    private function getStoreId(): ?int
+    {
+        $storeId = $this->request->getParam('store');
+
+        return $storeId !== null && $storeId !== '' ? (int)$storeId : null;
+    }
+
+    /**
+     * @param string $status
+     * @return int|null
+     */
+    private function mapSubscriberStatus(string $status): ?int
+    {
+        $status = strtoupper(trim($status));
+
+        if (in_array($status, ['SUBSCRIBED', 'CONFIRMED'], true)) {
+            return SubscriberModel::STATUS_SUBSCRIBED;
+        }
+
+        if (in_array($status, ['UNSUBSCRIBED', 'REMOVED'], true)) {
+            return SubscriberModel::STATUS_UNSUBSCRIBED;
+        }
+
+        return null;
     }
 }

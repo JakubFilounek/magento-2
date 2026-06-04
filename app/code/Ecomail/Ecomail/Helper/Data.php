@@ -80,7 +80,7 @@ class Data extends AbstractHelper
      */
     public function isAvailable($store = null): bool
     {
-        return $this->isEnabled($store) && $this->getSubscriberList($store);
+        return $this->isEnabled($store) && $this->getApiKey($store) && $this->getSubscriberList($store);
     }
 
     /**
