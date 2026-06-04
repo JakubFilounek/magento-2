@@ -87,3 +87,5 @@ Enabled,Enabled
 "Unsaved changes","Unsaved changes"
 "Save the Ecomail configuration before leaving this page.","Save the Ecomail configuration before leaving this page."
 "Save Config","Save Config"
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag without spaces. The Magento NOT LOGGED IN group is not sent. Warning: Ecomail can replace all tags on existing contacts.","Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag without spaces. The Magento NOT LOGGED IN group is not sent. Warning: Ecomail can replace all tags on existing contacts."
+"Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent.","Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent."

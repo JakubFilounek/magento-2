@@ -86,7 +86,7 @@
                 <field id="sync_include_tags" type="select" translate="label comment" sortOrder="74" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Send tags during initial sync</label>
-                    <comment>Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag. Warning: Ecomail can replace all tags on existing contacts.</comment>
+                    <comment>Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag without spaces. The Magento NOT LOGGED IN group is not sent. Warning: Ecomail can replace all tags on existing contacts.</comment>
                     <depends>
                         <field id="ecomail/general/enabled">1</field>
                         <field id="ecomail/general/sync_existing">1</field>
@@ -201,7 +201,7 @@
                 <field id="send_groups" type="select" translate="label comment" sortOrder="60" showInDefault="1" showInWebsite="1"
                        showInStore="1">
                     <label>Customer groups to tags</label>
-                    <comment>Customer group will be sent as an Ecomail tag.</comment>
+                    <comment>Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent.</comment>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
                 <field id="send_locale" type="select" translate="label comment" sortOrder="70" showInDefault="1" showInWebsite="1"

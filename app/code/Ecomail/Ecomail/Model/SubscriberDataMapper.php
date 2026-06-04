@@ -267,7 +267,11 @@ class SubscriberDataMapper
             if ($customerGroupId !== null) {
                 try {
                     $group = $this->groupRepository->getById((int)$customerGroupId);
-                    $tags[] = $group->getCode();
+                    $groupTag = $this->normalizeMagentoTag($group->getCode());
+
+                    if ($groupTag !== null && strtoupper($groupTag) !== 'NOT_LOGGED_IN') {
+                        $tags[] = $groupTag;
+                    }
                 } catch (Exception $e) {
                     // Missing groups should not block subscription sync.
                 }
@@ -291,5 +295,25 @@ class SubscriberDataMapper
         }
 
         return $data;
+    }
+
+    /**
+     * @param string|null $tag
+     * @return string|null
+     */
+    private function normalizeMagentoTag($tag): ?string
+    {
+        $tag = trim((string)$tag);
+
+        if ($tag === '') {
+            return null;
+        }
+
+        $tag = preg_replace('/\s+/', '_', $tag);
+        $tag = preg_replace('/[^A-Za-z0-9_-]/', '', (string)$tag);
+        $tag = preg_replace('/_+/', '_', (string)$tag);
+        $tag = trim((string)$tag, '_-');
+
+        return $tag === '' ? null : $tag;
     }
 }

@@ -87,3 +87,5 @@ Enabled,Povolené
 "Unsaved changes","Neuložené zmeny"
 "Save the Ecomail configuration before leaving this page.","Pred opustením stránky uložte konfiguráciu Ecomailu."
 "Save Config","Uložiť konfiguráciu"
+"Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag without spaces. The Magento NOT LOGGED IN group is not sent. Warning: Ecomail can replace all tags on existing contacts.","Odosiela tagy magento a magento_newsletter. Ak je zapnuté Customer groups to tags, odošle aj tag zákazníckej skupiny bez medzier. Skupina Magento NOT LOGGED IN sa neodosiela. Pozor: Ecomail môže nahradiť všetky tagy pri existujúcich kontaktoch."
+"Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent.","Zákaznícka skupina sa odošle ako Ecomail tag bez medzier. Skupina Magento NOT LOGGED IN sa neodosiela."
