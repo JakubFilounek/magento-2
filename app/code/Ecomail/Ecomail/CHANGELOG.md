@@ -1,6 +1,6 @@
 # Ecomail changelog
 
-## v2.2.0 - 21 May, 2026
+## v2.3.0 - 5 June, 2026
 * changed initial sync to a Magento cron-backed batch job
 * added persistent sync progress and admin start/status panel
 * added lock handling so another sync cannot start while one is pending or running
@@ -9,6 +9,10 @@
 * preserved existing Ecomail tags during single subscriber subscribe and update requests
 * added a floating unsaved changes warning to the Ecomail configuration page
 * normalized Magento customer group tags and skipped the NOT LOGGED IN group
+
+## v2.2.0 - 21 May, 2026
+* prepared Magento cron-backed initial sync foundation
+* added compact API request logging
 
 ## v2.1.0 - 19 May, 2026
 * updated Composer metadata for modern PHP 8.x / Magento 2.4.x installations

@@ -18,13 +18,29 @@ Magento 2 module for connecting a Magento store with Ecomail. The module synchro
 ## Compatibility
 
 - Magento 2.4.x
-- PHP 8.1 to 8.5
+- PHP 8.1 to 8.4
 - Requires PHP cURL extension
 - Requires Magento cron to be running
 
 ## Installation
 
-Copy the module folder to:
+When installed from Adobe Commerce Marketplace, use Composer from the Magento root folder:
+
+```bash
+composer require ecomail/magento2-ecomail:2.3.0
+```
+
+Then run:
+
+```bash
+php bin/magento module:enable Ecomail_Ecomail
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:flush
+```
+
+For a manual development install, copy the module folder to:
 
 ```bash
 app/code/Ecomail/Ecomail
@@ -50,7 +66,17 @@ Enter the Ecomail API key, choose the subscriber list, configure the options, an
 
 ## Updating
 
-Upload the new version of the module over the existing files in:
+When installed through Composer, update with:
+
+```bash
+composer require ecomail/magento2-ecomail:2.3.0
+php bin/magento setup:upgrade
+php bin/magento setup:di:compile
+php bin/magento setup:static-content:deploy -f
+php bin/magento cache:flush
+```
+
+For a manual development update, upload the new version of the module over the existing files in:
 
 ```bash
 app/code/Ecomail/Ecomail
