@@ -84,3 +84,6 @@ Enabled,Povolené
 "250 transactions per request","250 transakcií na požiadavku"
 "500 transactions per request","500 transakcií na požiadavku"
 "1000 transactions per request","1000 transakcií na požiadavku"
+"Unsaved changes","Neuložené zmeny"
+"Save the Ecomail configuration before leaving this page.","Pred opustením stránky uložte konfiguráciu Ecomailu."
+"Save Config","Uložiť konfiguráciu"

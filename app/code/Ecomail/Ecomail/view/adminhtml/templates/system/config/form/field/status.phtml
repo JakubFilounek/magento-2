@@ -1,7 +1,19 @@
 <?php /** @var $block Ecomail\Ecomail\Block\System\Config\Form\Field\Status */ ?>
 <?php $statusCode = $block->getStatusCode() ?>
 
-<span class="ecomail-status <?= $statusCode ?>"><?= __($statusCode) ?></span>
+<span class="ecomail-status <?= $block->escapeHtmlAttr($statusCode) ?>">
+    <?= $block->escapeHtml(__($statusCode)) ?>
+</span>
+<div class="ecomail-unsaved-warning"
+     data-mage-init='{"Ecomail_Ecomail/js/unsaved-config-warning": {}}'
+     role="alert"
+     aria-live="polite">
+    <strong><?= $block->escapeHtml(__('Unsaved changes')) ?></strong>
+    <span><?= $block->escapeHtml(__('Save the Ecomail configuration before leaving this page.')) ?></span>
+    <button type="button" class="action-default ecomail-unsaved-save">
+        <span><?= $block->escapeHtml(__('Save Config')) ?></span>
+    </button>
+</div>
 
 <style type="text/css">
     .ecomail-status {
@@ -21,5 +33,45 @@
 
     .ecomail-status.Error {
         background-color: #ff4d4f;
+    }
+
+    .ecomail-unsaved-warning {
+        align-items: center;
+        background: #fff8e5;
+        border: 1px solid #f0b849;
+        border-left: 4px solid #eb5202;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+        color: #514943;
+        display: none;
+        gap: 10px;
+        max-width: 520px;
+        padding: 12px 14px;
+        position: fixed;
+        right: 24px;
+        top: 82px;
+        z-index: 900;
+    }
+
+    .ecomail-unsaved-warning.is-visible {
+        display: flex;
+    }
+
+    .ecomail-unsaved-warning strong {
+        color: #eb5202;
+        white-space: nowrap;
+    }
+
+    .ecomail-unsaved-warning .ecomail-unsaved-save {
+        margin-left: auto;
+        white-space: nowrap;
+    }
+
+    @media (max-width: 900px) {
+        .ecomail-unsaved-warning {
+            left: 16px;
+            max-width: none;
+            right: 16px;
+            top: 64px;
+        }
     }
 </style>

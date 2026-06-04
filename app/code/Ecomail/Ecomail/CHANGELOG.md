@@ -7,6 +7,7 @@
 * added compact Ecomail API request logging with retention cleanup
 * added database tables for sync status and API logs
 * preserved existing Ecomail tags during single subscriber subscribe and update requests
+* added a floating unsaved changes warning to the Ecomail configuration page
 
 ## v2.1.0 - 19 May, 2026
 * updated Composer metadata for modern PHP 8.x / Magento 2.4.x installations
