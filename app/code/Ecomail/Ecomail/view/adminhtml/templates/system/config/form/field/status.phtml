@@ -81,12 +81,59 @@
     }
 
     .ecomail-api-key-control .ecomail-api-key-toggle {
+        align-items: center;
         border-bottom-left-radius: 0;
         border-left: 0;
         border-top-left-radius: 0;
+        display: inline-flex;
+        justify-content: center;
         min-width: 42px;
         padding-left: 10px;
         padding-right: 10px;
+        position: relative;
+    }
+
+    .ecomail-api-key-toggle .ecomail-eye-icon {
+        border: 2px solid #514943;
+        border-radius: 50% 50%;
+        display: inline-block;
+        height: 12px;
+        position: relative;
+        width: 20px;
+    }
+
+    .ecomail-api-key-toggle .ecomail-eye-icon::before {
+        background: #514943;
+        border-radius: 50%;
+        content: '';
+        height: 6px;
+        left: 50%;
+        position: absolute;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 6px;
+    }
+
+    .ecomail-api-key-toggle .ecomail-eye-icon::after {
+        background: #514943;
+        content: '';
+        height: 2px;
+        left: -2px;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        transform: rotate(-38deg);
+        transform-origin: center;
+        width: 24px;
+    }
+
+    .ecomail-api-key-toggle.is-hidden .ecomail-eye-icon::after,
+    .ecomail-api-key-toggle.is-masked .ecomail-eye-icon::after {
+        opacity: 1;
+    }
+
+    .ecomail-api-key-toggle.is-masked {
+        box-shadow: inset 0 0 0 1px #eb5202;
     }
 
     @media (max-width: 900px) {

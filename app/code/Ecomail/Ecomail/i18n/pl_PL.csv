@@ -93,3 +93,4 @@ Enabled,Włączone
 "Source value sent to Ecomail for synchronized contacts. Default: magento_plugin.","Wartość źródła wysyłana do Ecomail dla synchronizowanych kontaktów. Domyślnie: magento_plugin."
 "Show API key","Pokaż klucz API"
 "Hide API key","Ukryj klucz API"
+"Saved API key is hidden by Magento. Type a new API key to show it.","Zapisany klucz API jest ukryty przez Magento. Wpisz nowy klucz API, aby go pokazać."

@@ -57,3 +57,4 @@ Enabled,Zapnout
 "Source value sent to Ecomail for synchronized contacts. Default: magento_plugin.","Hodnota zdroje odesílaná do Ecomailu u synchronizovaných kontaktů. Výchozí hodnota: magento_plugin."
 "Show API key","Zobrazit API klíč"
 "Hide API key","Skrýt API klíč"
+"Saved API key is hidden by Magento. Type a new API key to show it.","Uložený API klíč je v Magento skrytý. Pro zobrazení zadejte nový API klíč."
