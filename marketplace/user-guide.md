@@ -49,7 +49,7 @@ Stores > Configuration > Ecomail
 
 After changing settings, save the configuration.
 
-The API key field is stored encrypted by Magento after saving. The eye button beside the field can temporarily show a newly typed key. A previously saved key remains masked by Magento and cannot be revealed from the field.
+The API key is stored encrypted by Magento after saving.
 
 ## Contact Source
 

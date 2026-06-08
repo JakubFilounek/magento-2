@@ -91,6 +91,3 @@ Enabled,Enabled
 "Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent.","Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent."
 "Contact source","Contact source"
 "Source value sent to Ecomail for synchronized contacts. Default: magento_plugin.","Source value sent to Ecomail for synchronized contacts. Default: magento_plugin."
-"Show API key","Show API key"
-"Hide API key","Hide API key"
-"Saved API key is hidden by Magento. Type a new API key to show it.","Saved API key is hidden by Magento. Type a new API key to show it."
