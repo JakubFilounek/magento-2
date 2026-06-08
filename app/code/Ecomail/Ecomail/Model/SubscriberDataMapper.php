@@ -282,6 +282,12 @@ class SubscriberDataMapper
             $data['tags'] = array_values(array_unique($tags));
         }
 
+        $source = $this->helper->getSubscriberSource($storeId);
+
+        if ($source !== '') {
+            $data['source'] = $source;
+        }
+
         if ($this->helper->sendLocale($storeId)) {
             $locale = $this->scopeConfig->getValue(
                 'general/locale/code',

@@ -64,6 +64,15 @@
                     </depends>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
+                <field id="subscriber_source" type="text" translate="label comment" sortOrder="65"
+                       showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Contact source</label>
+                    <comment>Source value sent to Ecomail for synchronized contacts. Default: magento_plugin.</comment>
+                    <validate>validate-length maximum-length-64</validate>
+                    <depends>
+                        <field id="ecomail/general/enabled">1</field>
+                    </depends>
+                </field>
                 <field id="sync_existing" type="select" translate="label comment" sortOrder="70" showInDefault="1"
                        showInWebsite="1" showInStore="1">
                     <label>Allow initial sync</label>

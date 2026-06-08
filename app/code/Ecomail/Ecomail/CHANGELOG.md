@@ -9,6 +9,8 @@
 * preserved existing Ecomail tags during single subscriber subscribe and update requests
 * added a floating unsaved changes warning to the Ecomail configuration page
 * normalized Magento customer group tags and skipped the NOT LOGGED IN group
+* added configurable Ecomail contact source with magento_plugin as the default
+* added an admin show/hide toggle for the API key field
 
 ## v2.2.0 - 21 May, 2026
 * prepared Magento cron-backed initial sync foundation

@@ -5,6 +5,7 @@ Connect a Magento 2 store with Ecomail for newsletter subscribers, customer data
 ## Features
 
 - Synchronizes Magento newsletter subscribers with a selected Ecomail list.
+- Sends a configurable Ecomail contact source. The default source is `magento_plugin`.
 - Sends customer name, address, date of birth, customer group, and store language when enabled.
 - Sends completed orders as Ecomail transactions.
 - Sends cart contents when Magento knows the customer email.
@@ -35,7 +36,7 @@ Open Magento admin and go to:
 Stores > Configuration > Ecomail
 ```
 
-Enter the Ecomail API key, load subscriber lists, choose the destination list, configure the sync and tracking options, then save the configuration.
+Enter the Ecomail API key, load subscriber lists, choose the destination list, configure the contact source, sync, and tracking options, then save the configuration.
 
 ## Requirements
 

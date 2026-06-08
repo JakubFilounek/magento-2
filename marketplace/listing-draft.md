@@ -13,6 +13,7 @@ The extension is configured directly from Magento admin. Store owners can choose
 ## Key Features
 
 - Newsletter subscriber sync.
+- Configurable Ecomail contact source.
 - Customer data sync with optional name, address, birthday, customer group, and language fields.
 - Order transaction sync.
 - Cart item sync for abandoned cart automation.

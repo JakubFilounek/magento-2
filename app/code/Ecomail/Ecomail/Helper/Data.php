@@ -15,6 +15,7 @@ class Data extends AbstractHelper
     const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_LIST = 'ecomail/general/subscriber_list';
     const XML_PATH_ECOMAIL_GENERAL_SKIP_DOUBLE_OPTIN = 'ecomail/general/skip_double_optin';
     const XML_PATH_ECOMAIL_GENERAL_TRIGGER_AUTORESPONDERS = 'ecomail/general/trigger_autoresponders';
+    const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_SOURCE = 'ecomail/general/subscriber_source';
     const XML_PATH_ECOMAIL_GENERAL_WEBHOOK_TOKEN = 'ecomail/general/webhook_token';
     const XML_PATH_ECOMAIL_GENERAL_SYNC_EXISTING = 'ecomail/general/sync_existing';
     const XML_PATH_ECOMAIL_GENERAL_SYNC_INCLUDE_TAGS = 'ecomail/general/sync_include_tags';
@@ -107,6 +108,27 @@ class Data extends AbstractHelper
             ScopeInterface::SCOPE_STORE,
             $store
         );
+    }
+
+    /**
+     * @param null $store
+     * @return string
+     */
+    public function getSubscriberSource($store = null): string
+    {
+        $source = (string)$this->scopeConfig->getValue(
+            self::XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_SOURCE,
+            ScopeInterface::SCOPE_STORE,
+            $store
+        );
+
+        $source = trim((string)preg_replace('/[\x00-\x1F\x7F]/', '', $source));
+
+        if ($source === '') {
+            $source = 'magento_plugin';
+        }
+
+        return substr($source, 0, 64);
     }
 
     /**

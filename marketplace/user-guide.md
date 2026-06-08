@@ -40,7 +40,7 @@ Stores > Configuration > Ecomail
 | Setting Area | What It Does |
 | --- | --- |
 | Connection | Stores the Ecomail API key and loads available Ecomail lists |
-| Contact Sync | Controls which customer fields are sent to Ecomail |
+| Contact Sync | Controls which customer fields and contact source are sent to Ecomail |
 | Initial Sync | Imports existing Magento contacts and orders through Magento cron |
 | Checkout | Shows an optional newsletter opt-out checkbox in checkout |
 | Tracking | Enables page, product, cart, and order tracking |
@@ -48,6 +48,18 @@ Stores > Configuration > Ecomail
 | API Logs | Shows recent Ecomail API request results |
 
 After changing settings, save the configuration.
+
+The API key field is stored encrypted by Magento after saving. The eye button beside the field can temporarily show the value currently displayed in the browser input, which is useful when checking a newly typed key.
+
+## Contact Source
+
+The extension sends a source value with synchronized contacts. The default source is:
+
+```text
+magento_plugin
+```
+
+The source can be changed in Magento admin if the store owner wants to use a different source name in Ecomail.
 
 ## Initial Synchronization
 

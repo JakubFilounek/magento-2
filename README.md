@@ -6,6 +6,7 @@ Magento 2 module for connecting a Magento store with Ecomail. The module synchro
 
 - Connects Magento 2 to an Ecomail account using an API key.
 - Lets the store owner choose an Ecomail subscriber list from Magento admin.
+- Lets the store owner set the contact source sent to Ecomail, with `magento_plugin` as the default.
 - Synchronizes existing customers and orders through Magento cron.
 - Sends new newsletter signups and customer updates to Ecomail.
 - Sends order transactions to Ecomail.
@@ -62,7 +63,7 @@ After installation, open Magento admin and go to:
 Stores > Configuration > Ecomail
 ```
 
-Enter the Ecomail API key, choose the subscriber list, configure the options, and save the settings.
+Enter the Ecomail API key, choose the subscriber list, configure the contact source and other options, and save the settings.
 
 ## Updating
 

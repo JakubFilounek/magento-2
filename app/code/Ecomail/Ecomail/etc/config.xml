@@ -7,6 +7,7 @@
                 <enabled>0</enabled>
                 <skip_double_optin>1</skip_double_optin>
                 <trigger_autoresponders>0</trigger_autoresponders>
+                <subscriber_source>magento_plugin</subscriber_source>
                 <sync_existing>0</sync_existing>
                 <sync_include_tags>0</sync_include_tags>
                 <sync_update_existing>1</sync_update_existing>

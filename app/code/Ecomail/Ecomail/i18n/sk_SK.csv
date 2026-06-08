@@ -89,3 +89,7 @@ Enabled,Povolené
 "Save Config","Uložiť konfiguráciu"
 "Sends magento and magento_newsletter tags. If Customer groups to tags is enabled, it also sends the customer group tag without spaces. The Magento NOT LOGGED IN group is not sent. Warning: Ecomail can replace all tags on existing contacts.","Odosiela tagy magento a magento_newsletter. Ak je zapnuté Customer groups to tags, odošle aj tag zákazníckej skupiny bez medzier. Skupina Magento NOT LOGGED IN sa neodosiela. Pozor: Ecomail môže nahradiť všetky tagy pri existujúcich kontaktoch."
 "Customer group will be sent as an Ecomail tag without spaces. The Magento NOT LOGGED IN group is not sent.","Zákaznícka skupina sa odošle ako Ecomail tag bez medzier. Skupina Magento NOT LOGGED IN sa neodosiela."
+"Contact source","Zdroj kontaktu"
+"Source value sent to Ecomail for synchronized contacts. Default: magento_plugin.","Hodnota zdroja odosielaná do Ecomailu pri synchronizovaných kontaktoch. Predvolená hodnota: magento_plugin."
+"Show API key","Zobraziť API kľúč"
+"Hide API key","Skryť API kľúč"
