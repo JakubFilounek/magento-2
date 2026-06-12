@@ -106,7 +106,7 @@ class TransactionMapper
 
     /**
      * @param array $categoryIds
-     * @return string
+     * @return array
      * @throws LocalizedException
      */
     private function getCategoryNames(array $categoryIds): array

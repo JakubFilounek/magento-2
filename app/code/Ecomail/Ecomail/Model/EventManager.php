@@ -68,7 +68,10 @@ class EventManager
         $quote = $this->checkoutSession->getQuote();
         $storeId = $quote->getStoreId();
 
-        if (!$this->helper->isAvailable($storeId) || !$this->helper->sendCartItems($storeId) || !$quote->getCustomerEmail()) {
+        if (!$this->helper->isAvailable($storeId)
+            || !$this->helper->sendCartItems($storeId)
+            || !$quote->getCustomerEmail()
+        ) {
             return;
         }
 

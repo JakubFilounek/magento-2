@@ -61,7 +61,9 @@ class Subscriber
         SubscriberModel $subject,
         $result
     ) {
-        if ($this->helper->isAvailable($subject->getStoreId()) && $result == SubscriberModel::STATUS_SUBSCRIBED) {
+        if ($this->helper->isAvailable($subject->getStoreId())
+            && $result == SubscriberModel::STATUS_SUBSCRIBED
+        ) {
             $this->subscriptionManager->subscribe($subject);
             $this->quoteManager->setQuoteEmail($subject->getEmail());
             $this->eventManager->updateCartContent();
@@ -81,7 +83,9 @@ class Subscriber
         SubscriberModel $subject,
         SubscriberModel $result
     ) {
-        if ($this->helper->isAvailable($result->getStoreId()) && $result->getStatus() == SubscriberModel::STATUS_SUBSCRIBED) {
+        if ($this->helper->isAvailable($result->getStoreId())
+            && $result->getStatus() == SubscriberModel::STATUS_SUBSCRIBED
+        ) {
             $this->subscriptionManager->subscribe($subject);
             $this->quoteManager->setQuoteEmail($subject->getEmail());
             $this->eventManager->updateCartContent();
@@ -99,7 +103,9 @@ class Subscriber
         SubscriberModel $subject,
         SubscriberModel $result
     ): SubscriberModel {
-        if ($this->helper->isAvailable($result->getStoreId()) && $result->getStatus() == SubscriberModel::STATUS_UNSUBSCRIBED) {
+        if ($this->helper->isAvailable($result->getStoreId())
+            && $result->getStatus() == SubscriberModel::STATUS_UNSUBSCRIBED
+        ) {
             $this->subscriptionManager->unsubscribe($result);
         }
 
@@ -115,7 +121,9 @@ class Subscriber
         SubscriberModel $subject,
         SubscriberModel $result
     ): SubscriberModel {
-        if ($this->helper->isAvailable($result->getStoreId()) && $result->getStatus() == SubscriberModel::STATUS_UNSUBSCRIBED) {
+        if ($this->helper->isAvailable($result->getStoreId())
+            && $result->getStatus() == SubscriberModel::STATUS_UNSUBSCRIBED
+        ) {
             $this->subscriptionManager->unsubscribe($result);
         }
 

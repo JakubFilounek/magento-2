@@ -68,7 +68,9 @@ class CustomerAddressSaved implements ObserverInterface
             return;
         }
 
-        if (!$this->helper->isAvailable($customer->getStoreId()) || !$this->helper->sendAddress($customer->getStoreId())) {
+        $storeId = $customer->getStoreId();
+
+        if (!$this->helper->isAvailable($storeId) || !$this->helper->sendAddress($storeId)) {
             return;
         }
 

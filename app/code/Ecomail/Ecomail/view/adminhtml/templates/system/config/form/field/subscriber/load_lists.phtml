@@ -16,14 +16,14 @@
             let apiKey = $('#ecomail_general_api_key').val();
 
             $.ajax({
-                url: '<?= /* @escapeNotVerified */ $block->getAjaxUrl() ?>',
+                url: '<?= $block->escapeJs($block->escapeUrl($block->getAjaxUrl())) ?>',
                 dataType: 'json',
                 data: {
                     'api_key': apiKey
                 },
                 method: 'get',
                 beforeSend: function () {
-                    $('#load_lists').text('<?= __('Loading ...') ?>');
+                    $('#load_lists').text('<?= $block->escapeJs(__('Loading ...')) ?>');
                 },
                 success: function (data) {
                     $('#ecomail_general_subscriber_list').find('option').remove();
@@ -41,7 +41,7 @@
                     $('#ecomail_general_api_key').val('')
                 },
                 complete: function () {
-                    $('#load_lists').text('<?= __('Load Lists') ?>');
+                    $('#load_lists').text('<?= $block->escapeJs(__('Load Lists')) ?>');
                 }
             });
         });

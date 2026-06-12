@@ -1,6 +1,12 @@
 # Ecomail changelog
 
-## v2.3.0 - 5 June, 2026
+## v2.3.0 - 11 June, 2026
+* added etc/db_schema_whitelist.json for declarative schema support
+* added full OSL-3.0 license text to LICENSE.txt
+* declared explicit Composer dependencies on the store, quote, backend, and config modules
+* fixed admin template output escaping and translation handling for Marketplace code standards
+* fixed coding standard issues: line lengths, constant visibility, and nullable parameter declarations
+* removed unused legacy CLI sync code paths
 * changed initial sync to a Magento cron-backed batch job
 * added persistent sync progress and admin start/status panel
 * added lock handling so another sync cannot start while one is pending or running

@@ -39,12 +39,21 @@ class ApiKey extends Encrypted
         TypeListInterface $cacheTypeList,
         EncryptorInterface $encryptor,
         Api $api,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         $this->api = $api;
-        parent::__construct($context, $registry, $config, $cacheTypeList, $encryptor, $resource, $resourceCollection, $data);
+        parent::__construct(
+            $context,
+            $registry,
+            $config,
+            $cacheTypeList,
+            $encryptor,
+            $resource,
+            $resourceCollection,
+            $data
+        );
     }
 
     /**

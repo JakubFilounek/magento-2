@@ -2,8 +2,10 @@
 
 ## Package
 
-- [ ] Build package ZIP with `tools/build-marketplace-package.ps1`.
+- [ ] Build package ZIP with `tools/build-marketplace-package.ps1` (Windows) or `tools/build-marketplace-package.sh` (Linux/macOS).
 - [ ] Confirm ZIP root contains `composer.json`, `registration.php`, `etc/`, `Block/`, `Model/`, and other module directories.
+- [ ] Confirm `etc/db_schema_whitelist.json` is present and matches `etc/db_schema.xml`.
+- [ ] Confirm `LICENSE.txt` contains the full OSL-3.0 license text.
 - [ ] Confirm ZIP does not include `.git`, `.github`, `docs`, `PRESTASHOP_PLUGIN`, `marketplace`, or local test files.
 - [ ] Confirm `composer.json` includes `name`, `type`, and `version`.
 - [ ] Confirm package size is below Adobe Marketplace limits.

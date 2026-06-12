@@ -13,6 +13,7 @@
             'formAccount' => $block->getFormAccount(),
         ],
     ];
+    $configJson = json_encode($config, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
     ?>
-    <div data-mage-init='<?= $block->escapeHtmlAttr(json_encode($config, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT)) ?>'></div>
+    <div data-mage-init='<?= $block->escapeHtmlAttr($configJson) ?>'></div>
 <?php endif; ?>

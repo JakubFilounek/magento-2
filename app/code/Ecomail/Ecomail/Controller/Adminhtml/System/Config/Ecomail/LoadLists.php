@@ -11,7 +11,7 @@ use Magento\Framework\Controller\ResultInterface;
 
 class LoadLists extends Action
 {
-    const ADMIN_RESOURCE = 'Ecomail_Ecomail::ecomail_configuration';
+    public const ADMIN_RESOURCE = 'Ecomail_Ecomail::ecomail_configuration';
 
     /**
      * @var Api

@@ -1,184 +1,611 @@
 <?php /** @var \Ecomail\Ecomail\Block\System\Config\Form\Field\InitialSync $block */ ?>
 <?php $state = $block->getState(); ?>
 
-<div class="ecomail-sync-panel">
-    <div class="ecomail-sync-header">
-        <span class="ecomail-sync-title"><?= $block->escapeHtml(__('Initial Sync')) ?></span>
-        <span id="ecomail_sync_status" class="ecomail-sync-badge">
-            <?= $block->escapeHtml($state['status'] ?? __('Not started')) ?>
-        </span>
-    </div>
-    <div class="ecomail-sync-bar" aria-hidden="true">
-        <span id="ecomail_sync_bar"></span>
-    </div>
-    <div class="ecomail-sync-grid">
-        <div>
-            <span class="ecomail-sync-label"><?= $block->escapeHtml(__('Progress')) ?></span>
-            <strong id="ecomail_sync_percent">0%</strong>
-            <span id="ecomail_sync_count" class="ecomail-sync-muted"></span>
+<div class="ecomail-sync" id="ecomail_sync_root">
+    <div class="ecomail-sync__card">
+        <div class="ecomail-sync__head">
+            <div class="ecomail-sync__title-group">
+                <span class="ecomail-sync__eyebrow"><?= $block->escapeHtml(__('Initial Sync')) ?></span>
+                <h3 class="ecomail-sync__title" id="ecomail_sync_headline">
+                    <?= $block->escapeHtml(__('Ready to sync')) ?>
+                </h3>
+                <p class="ecomail-sync__subtitle" id="ecomail_sync_subtitle">
+                    <?= $block->escapeHtml(__('Send your existing customers and orders to Ecomail in batches.')) ?>
+                </p>
+            </div>
+            <span class="ecomail-sync__badge" id="ecomail_sync_status" data-status="idle">
+                <span class="ecomail-sync__dot"></span>
+                <span class="ecomail-sync__badge-text"><?= $block->escapeHtml(__('Idle')) ?></span>
+            </span>
         </div>
-        <div>
-            <span class="ecomail-sync-label"><?= $block->escapeHtml(__('Customers')) ?></span>
-            <strong id="ecomail_sync_customers">0/0</strong>
+
+        <div class="ecomail-sync__active" id="ecomail_sync_active" hidden>
+            <div class="ecomail-sync__progress" aria-hidden="true">
+                <span class="ecomail-sync__progress-fill" id="ecomail_sync_bar"></span>
+            </div>
+            <div class="ecomail-sync__progress-meta">
+                <span class="ecomail-sync__percent" id="ecomail_sync_percent">0%</span>
+                <span class="ecomail-sync__counter" id="ecomail_sync_count">0 / 0</span>
+            </div>
+            <div class="ecomail-sync__stats">
+                <div class="ecomail-sync__stat">
+                    <span class="ecomail-sync__stat-label"><?= $block->escapeHtml(__('Customers')) ?></span>
+                    <span class="ecomail-sync__stat-value" id="ecomail_sync_customers">0 / 0</span>
+                </div>
+                <div class="ecomail-sync__stat">
+                    <span class="ecomail-sync__stat-label"><?= $block->escapeHtml(__('Orders')) ?></span>
+                    <span class="ecomail-sync__stat-value" id="ecomail_sync_orders">0 / 0</span>
+                </div>
+                <div class="ecomail-sync__stat">
+                    <span class="ecomail-sync__stat-label"><?= $block->escapeHtml(__('Status message')) ?></span>
+                    <span class="ecomail-sync__stat-value ecomail-sync__stat-value--soft" id="ecomail_sync_message">—</span>
+                </div>
+            </div>
         </div>
-        <div>
-            <span class="ecomail-sync-label"><?= $block->escapeHtml(__('Orders')) ?></span>
-            <strong id="ecomail_sync_orders">0/0</strong>
+
+        <div class="ecomail-sync__last" id="ecomail_sync_last" hidden>
+            <div class="ecomail-sync__last-icon" id="ecomail_sync_last_icon">
+                <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true">
+                    <path fill="currentColor" d="M8.2 13.6 4.6 10l-1.2 1.2 4.8 4.8 10-10-1.2-1.2z"/>
+                </svg>
+            </div>
+            <div class="ecomail-sync__last-body">
+                <span class="ecomail-sync__last-label" id="ecomail_sync_last_label">
+                    <?= $block->escapeHtml(__('Last sync')) ?>
+                </span>
+                <span class="ecomail-sync__last-summary" id="ecomail_sync_last_summary">—</span>
+                <span class="ecomail-sync__last-time" id="ecomail_sync_last_time"></span>
+            </div>
+        </div>
+
+        <div class="ecomail-sync__footer">
+            <button type="button" class="ecomail-sync__button" id="ecomail_start_sync">
+                <span id="ecomail_start_sync_label"><?= $block->escapeHtml(__('Start sync')) ?></span>
+            </button>
+            <p class="ecomail-sync__note">
+                <?= $block->escapeHtml(
+                    __('Cron processes the sync in batches. Refreshing this page will not lose progress. Magento cron must be running.')
+                ) ?>
+            </p>
         </div>
     </div>
-    <div class="ecomail-sync-message">
-        <span class="ecomail-sync-label">
-            <?= $block->escapeHtml(__('Last message')) ?>
-            <span id="ecomail_sync_message_time" class="ecomail-sync-time"></span>
-        </span>
-        <span id="ecomail_sync_message"><?= $block->escapeHtml($state['last_message'] ?? '') ?></span>
-    </div>
-    <div class="ecomail-sync-actions">
-        <button type="button" class="action-default" id="ecomail_start_sync">
-            <span><?= $block->escapeHtml(__('Start Sync')) ?></span>
-        </button>
-    </div>
-    <p class="note">
-        <span><?= $block->escapeHtml(__('Cron processes the sync in batches. Refreshing this page will not lose progress. Magento cron must be running.')) ?></span>
-    </p>
 </div>
 
 <style>
-    .ecomail-sync-panel {
-        max-width: 780px;
-        padding: 16px;
-        border: 1px solid #d6d6d6;
-        border-radius: 4px;
-        background: #fff;
+    .ecomail-sync {
+        max-width: 760px;
+        margin: 4px 0 12px;
+        color: #1f1d1a;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
     }
 
-    .ecomail-sync-header {
-        align-items: center;
+    .ecomail-sync__card {
+        background: #fbfaf7;
+        border: 1px solid #ebe7df;
+        border-radius: 14px;
+        padding: 24px 26px 20px;
+        box-shadow: 0 1px 0 rgba(31, 29, 26, 0.02);
+        transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .ecomail-sync__card:hover {
+        border-color: #ddd7ca;
+    }
+
+    .ecomail-sync__head {
+        align-items: flex-start;
         display: flex;
+        gap: 16px;
         justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 12px;
     }
 
-    .ecomail-sync-title {
-        font-size: 16px;
-        font-weight: 600;
+    .ecomail-sync__title-group {
+        min-width: 0;
     }
 
-    .ecomail-sync-badge {
-        border-radius: 999px;
-        background: #e3e3e3;
-        color: #303030;
-        display: inline-block;
-        font-size: 12px;
-        font-weight: 700;
-        line-height: 1;
-        padding: 7px 10px;
+    .ecomail-sync__eyebrow {
+        color: #8a8275;
+        display: block;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.08em;
         text-transform: uppercase;
+        margin-bottom: 6px;
     }
 
-    .ecomail-sync-badge.is-completed {
-        background: #e3fcef;
-        color: #006400;
+    .ecomail-sync__title {
+        color: #1f1d1a;
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 1.25;
+        margin: 0 0 4px;
     }
 
-    .ecomail-sync-badge.is-running,
-    .ecomail-sync-badge.is-pending {
-        background: #fff4cc;
+    .ecomail-sync__subtitle {
+        color: #6b6358;
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0;
+        max-width: 52ch;
+    }
+
+    .ecomail-sync__badge {
+        align-items: center;
+        background: #f1ede4;
+        border: 1px solid #e4dfd2;
+        border-radius: 999px;
+        color: #5a5346;
+        display: inline-flex;
+        flex-shrink: 0;
+        font-size: 12px;
+        font-weight: 500;
+        gap: 7px;
+        height: 26px;
+        padding: 0 11px 0 9px;
+        transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+    }
+
+    .ecomail-sync__dot {
+        background: #b8ad97;
+        border-radius: 50%;
+        display: inline-block;
+        height: 7px;
+        width: 7px;
+        transition: background-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .ecomail-sync__badge[data-status="running"],
+    .ecomail-sync__badge[data-status="pending"] {
+        background: #fdf4e3;
+        border-color: #f1e1bd;
         color: #8a5a00;
     }
 
-    .ecomail-sync-badge.is-failed {
-        background: #ffe5e5;
-        color: #b30000;
+    .ecomail-sync__badge[data-status="running"] .ecomail-sync__dot,
+    .ecomail-sync__badge[data-status="pending"] .ecomail-sync__dot {
+        background: #d99a2b;
+        animation: ecomail-pulse 1.6s ease-in-out infinite;
     }
 
-    .ecomail-sync-bar {
-        background: #f0f0f0;
+    .ecomail-sync__badge[data-status="completed"] {
+        background: #ecf6ee;
+        border-color: #d3e8d8;
+        color: #2f6b3a;
+    }
+
+    .ecomail-sync__badge[data-status="completed"] .ecomail-sync__dot {
+        background: #4b9858;
+    }
+
+    .ecomail-sync__badge[data-status="failed"] {
+        background: #fbecea;
+        border-color: #f1d2cd;
+        color: #9b3324;
+    }
+
+    .ecomail-sync__badge[data-status="failed"] .ecomail-sync__dot {
+        background: #c0432f;
+    }
+
+    .ecomail-sync__active {
+        margin-top: 22px;
+        opacity: 0;
+        transform: translateY(-4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .ecomail-sync__active.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .ecomail-sync__progress {
+        background: #ece7dc;
         border-radius: 999px;
-        height: 10px;
-        margin-bottom: 14px;
+        height: 6px;
         overflow: hidden;
+        position: relative;
     }
 
-    .ecomail-sync-bar span {
-        background: #0a6f64;
+    .ecomail-sync__progress-fill {
+        background: linear-gradient(90deg, #c66a3d 0%, #d97a4a 100%);
+        border-radius: 999px;
         display: block;
         height: 100%;
-        transition: width 0.25s ease;
+        position: relative;
+        transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         width: 0;
     }
 
-    .ecomail-sync-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
-        margin-bottom: 12px;
+    .ecomail-sync__progress-fill::after {
+        background: linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.35) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        content: "";
+        inset: 0;
+        position: absolute;
+        opacity: 0;
+        transition: opacity 0.25s ease;
     }
 
-    .ecomail-sync-grid > div,
-    .ecomail-sync-message {
-        background: #f8f8f8;
-        border: 1px solid #e3e3e3;
-        border-radius: 4px;
-        padding: 10px 12px;
+    .ecomail-sync__active[data-status="running"] .ecomail-sync__progress-fill::after,
+    .ecomail-sync__active[data-status="pending"] .ecomail-sync__progress-fill::after {
+        animation: ecomail-shimmer 1.6s linear infinite;
+        opacity: 1;
     }
 
-    .ecomail-sync-label {
-        color: #666;
-        display: block;
+    .ecomail-sync__progress-meta {
+        align-items: baseline;
+        display: flex;
+        gap: 10px;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .ecomail-sync__percent {
+        color: #1f1d1a;
+        font-size: 15px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .ecomail-sync__counter {
+        color: #8a8275;
         font-size: 12px;
-        margin-bottom: 3px;
+        font-variant-numeric: tabular-nums;
+    }
+
+    .ecomail-sync__stats {
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-top: 16px;
+    }
+
+    .ecomail-sync__stat {
+        background: #ffffff;
+        border: 1px solid #ebe7df;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 12px;
+        min-width: 0;
+    }
+
+    .ecomail-sync__stat-label {
+        color: #8a8275;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
         text-transform: uppercase;
     }
 
-    .ecomail-sync-muted {
-        color: #666;
-        display: block;
-        font-size: 12px;
-        margin-top: 2px;
+    .ecomail-sync__stat-value {
+        color: #1f1d1a;
+        font-size: 14px;
+        font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
 
-    .ecomail-sync-time {
-        color: #777;
-        font-size: 12px;
+    .ecomail-sync__stat-value--soft {
+        color: #4a4339;
         font-weight: 400;
-        margin-left: 6px;
-        text-transform: none;
     }
 
-    .ecomail-sync-actions {
-        margin: 10px 0;
+    .ecomail-sync__last {
+        align-items: center;
+        background: #ffffff;
+        border: 1px solid #ebe7df;
+        border-radius: 10px;
+        display: flex;
+        gap: 12px;
+        margin-top: 18px;
+        opacity: 0;
+        padding: 12px 14px;
+        transform: translateY(-4px);
+        transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .ecomail-sync__last.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .ecomail-sync__last-icon {
+        align-items: center;
+        background: #ecf6ee;
+        border-radius: 50%;
+        color: #4b9858;
+        display: inline-flex;
+        flex-shrink: 0;
+        height: 28px;
+        justify-content: center;
+        width: 28px;
+    }
+
+    .ecomail-sync__last[data-status="failed"] .ecomail-sync__last-icon {
+        background: #fbecea;
+        color: #c0432f;
+    }
+
+    .ecomail-sync__last-body {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+        min-width: 0;
+    }
+
+    .ecomail-sync__last-label {
+        color: #8a8275;
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+
+    .ecomail-sync__last-summary {
+        color: #1f1d1a;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .ecomail-sync__last-time {
+        color: #8a8275;
+        font-size: 12px;
+    }
+
+    .ecomail-sync__footer {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .ecomail-sync__button {
+        background: #1f1d1a;
+        border: 1px solid #1f1d1a;
+        border-radius: 8px;
+        color: #fbfaf7;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 500;
+        height: 36px;
+        padding: 0 18px;
+        transition: background-color 0.18s ease, transform 0.18s ease, opacity 0.18s ease;
+    }
+
+    .ecomail-sync__button:hover:not([disabled]) {
+        background: #2c2925;
+        transform: translateY(-1px);
+    }
+
+    .ecomail-sync__button:active:not([disabled]) {
+        transform: translateY(0);
+    }
+
+    .ecomail-sync__button[disabled] {
+        cursor: not-allowed;
+        opacity: 0.6;
+    }
+
+    .ecomail-sync__note {
+        color: #8a8275;
+        flex: 1 1 240px;
+        font-size: 12px;
+        line-height: 1.5;
+        margin: 0;
+        text-align: right;
+    }
+
+    @keyframes ecomail-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 rgba(217, 154, 43, 0.0); }
+        50% { box-shadow: 0 0 0 4px rgba(217, 154, 43, 0.18); }
+    }
+
+    @keyframes ecomail-shimmer {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+
+    @media (max-width: 640px) {
+        .ecomail-sync__head { flex-direction: column; }
+        .ecomail-sync__stats { grid-template-columns: 1fr; }
+        .ecomail-sync__note { text-align: left; flex-basis: 100%; }
     }
 </style>
 
 <script>
     require(['jquery'], function ($) {
-        var state = <?= /* @noEscape */ json_encode($state ?: []) ?>;
+        var initialState = <?= /* @noEscape */ json_encode(
+            $state ?: [],
+            JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
+        ) ?>;
 
-        function render(nextState) {
-            state = nextState || {};
+        var STATUS_LABELS = {
+            idle:      '<?= $block->escapeJs(__('Idle')) ?>',
+            pending:   '<?= $block->escapeJs(__('Queued')) ?>',
+            running:   '<?= $block->escapeJs(__('Syncing')) ?>',
+            completed: '<?= $block->escapeJs(__('Completed')) ?>',
+            failed:    '<?= $block->escapeJs(__('Failed')) ?>'
+        };
+
+        var HEADLINES = {
+            idle:      '<?= $block->escapeJs(__('Ready to sync')) ?>',
+            pending:   '<?= $block->escapeJs(__('Queued for the next cron run')) ?>',
+            running:   '<?= $block->escapeJs(__('Sync in progress')) ?>',
+            completed: '<?= $block->escapeJs(__('Sync complete')) ?>',
+            failed:    '<?= $block->escapeJs(__('Sync failed')) ?>'
+        };
+
+        var SUBTITLES = {
+            idle:      '<?= $block->escapeJs(__('Send your existing customers and orders to Ecomail in batches.')) ?>',
+            pending:   '<?= $block->escapeJs(__('Waiting for Magento cron to pick up the job.')) ?>',
+            running:   '<?= $block->escapeJs(__('Cron is processing batches. You can safely leave this page.')) ?>',
+            completed: '<?= $block->escapeJs(__('You can run another sync at any time.')) ?>',
+            failed:    '<?= $block->escapeJs(__('The previous run did not finish. Review the message below and try again.')) ?>'
+        };
+
+        var $root     = $('#ecomail_sync_root');
+        var $headline = $('#ecomail_sync_headline');
+        var $subtitle = $('#ecomail_sync_subtitle');
+        var $badge    = $('#ecomail_sync_status');
+        var $badgeText = $badge.find('.ecomail-sync__badge-text');
+        var $active   = $('#ecomail_sync_active');
+        var $bar      = $('#ecomail_sync_bar');
+        var $percent  = $('#ecomail_sync_percent');
+        var $count    = $('#ecomail_sync_count');
+        var $customers = $('#ecomail_sync_customers');
+        var $orders   = $('#ecomail_sync_orders');
+        var $message  = $('#ecomail_sync_message');
+        var $last     = $('#ecomail_sync_last');
+        var $lastSummary = $('#ecomail_sync_last_summary');
+        var $lastTime = $('#ecomail_sync_last_time');
+        var $lastLabel = $('#ecomail_sync_last_label');
+        var $button   = $('#ecomail_start_sync');
+        var $buttonLabel = $('#ecomail_start_sync_label');
+
+        var BUTTON_LABEL_DEFAULT = '<?= $block->escapeJs(__('Start sync')) ?>';
+        var BUTTON_LABEL_RESYNC  = '<?= $block->escapeJs(__('Run sync again')) ?>';
+        var BUTTON_LABEL_RUNNING = '<?= $block->escapeJs(__('Sync running…')) ?>';
+
+        // Tracks whether we are currently showing an active (running/pending) sync.
+        // When the active sync finishes, we collapse the live progress UI into a
+        // "Last sync" summary instead of leaving the old progress bar lingering.
+        var showingActive = false;
+
+        function normalizeStatus(raw) {
+            var status = String(raw || '').toLowerCase().trim();
+            if (status === 'pending' || status === 'running' || status === 'completed' || status === 'failed') {
+                return status;
+            }
+            return 'idle';
+        }
+
+        function isActive(status) {
+            return status === 'pending' || status === 'running';
+        }
+
+        function setVisible($el, visible) {
+            if (visible) {
+                $el.prop('hidden', false);
+                // Next frame so the CSS transition kicks in.
+                window.requestAnimationFrame(function () {
+                    $el.addClass('is-visible');
+                });
+            } else {
+                $el.removeClass('is-visible');
+                window.setTimeout(function () {
+                    if (!$el.hasClass('is-visible')) {
+                        $el.prop('hidden', true);
+                    }
+                }, 250);
+            }
+        }
+
+        function resetActivePanel() {
+            $bar.css('width', '0%');
+            $percent.text('0%');
+            $count.text('0 / 0');
+            $customers.text('0 / 0');
+            $orders.text('0 / 0');
+            $message.text('—');
+            $active.removeAttr('data-status');
+        }
+
+        function summarize(state) {
             var totalCustomers = parseInt(state.total_customers || 0, 10);
-            var totalOrders = parseInt(state.total_orders || 0, 10);
-            var processedCustomers = Math.min(parseInt(state.processed_customers || 0, 10), totalCustomers);
-            var processedOrders = Math.min(parseInt(state.processed_orders || 0, 10), totalOrders);
-            var total = totalCustomers + totalOrders;
-            var processed = processedCustomers + processedOrders;
-            var percent = total ? Math.round((processed / total) * 100) : 0;
-            var status = state.status || '<?= $block->escapeJs(__('Not started')) ?>';
-            var statusClass = String(status).toLowerCase().replace(/[^a-z0-9_-]/g, '-');
+            var totalOrders    = parseInt(state.total_orders || 0, 10);
+            var doneCustomers  = Math.min(parseInt(state.processed_customers || 0, 10), totalCustomers);
+            var doneOrders     = Math.min(parseInt(state.processed_orders || 0, 10), totalOrders);
+            var total          = totalCustomers + totalOrders;
+            var processed      = doneCustomers + doneOrders;
+            var percent        = total ? Math.round((processed / total) * 100) : 0;
 
-            $('#ecomail_sync_status')
-                .removeClass('is-completed is-running is-pending is-failed')
-                .addClass('is-' + statusClass)
-                .text(status);
-            $('#ecomail_sync_bar').css('width', percent + '%');
-            $('#ecomail_sync_percent').text(percent + '%');
-            $('#ecomail_sync_count').text(processed + '/' + total);
-            $('#ecomail_sync_customers').text(processedCustomers + '/' + totalCustomers);
-            $('#ecomail_sync_orders').text(processedOrders + '/' + totalOrders);
-            $('#ecomail_sync_message').text(state.last_message || '');
-            $('#ecomail_sync_message_time').text(state.updated_at ? '(' + state.updated_at + ')' : '');
+            return {
+                totalCustomers: totalCustomers,
+                totalOrders: totalOrders,
+                doneCustomers: doneCustomers,
+                doneOrders: doneOrders,
+                total: total,
+                processed: processed,
+                percent: percent
+            };
+        }
+
+        function describeFinished(state, sums) {
+            var parts = [];
+            if (sums.doneCustomers || sums.totalCustomers) {
+                parts.push(sums.doneCustomers + ' <?= $block->escapeJs(__('customers')) ?>');
+            }
+            if (sums.doneOrders || sums.totalOrders) {
+                parts.push(sums.doneOrders + ' <?= $block->escapeJs(__('orders')) ?>');
+            }
+            var counts = parts.length ? parts.join(' · ') : '<?= $block->escapeJs(__('Nothing to sync')) ?>';
+            var msg = (state.last_message || '').toString().trim();
+            return msg ? counts + ' — ' + msg : counts;
+        }
+
+        function render(rawState) {
+            var state = rawState || {};
+            var status = normalizeStatus(state.status);
+            var sums   = summarize(state);
+
+            $badge.attr('data-status', status);
+            $badgeText.text(STATUS_LABELS[status]);
+            $headline.text(HEADLINES[status]);
+            $subtitle.text(SUBTITLES[status]);
+
+            if (isActive(status)) {
+                showingActive = true;
+                $active.attr('data-status', status);
+                $bar.css('width', sums.percent + '%');
+                $percent.text(sums.percent + '%');
+                $count.text(sums.processed + ' / ' + sums.total);
+                $customers.text(sums.doneCustomers + ' / ' + sums.totalCustomers);
+                $orders.text(sums.doneOrders + ' / ' + sums.totalOrders);
+                $message.text(state.last_message || '—');
+                setVisible($active, true);
+                setVisible($last, false);
+
+                $buttonLabel.text(BUTTON_LABEL_RUNNING);
+                $button.prop('disabled', true);
+                return;
+            }
+
+            // Not active. If we *were* showing an active panel, this is the moment
+            // the run finished — reset live progress and surface a "Last sync" card.
+            if (showingActive) {
+                showingActive = false;
+                resetActivePanel();
+                setVisible($active, false);
+            }
+
+            if (status === 'completed' || status === 'failed') {
+                $last.attr('data-status', status);
+                $lastLabel.text(
+                    status === 'failed'
+                        ? '<?= $block->escapeJs(__('Last sync — failed')) ?>'
+                        : '<?= $block->escapeJs(__('Last sync')) ?>'
+                );
+                $lastSummary.text(describeFinished(state, sums));
+                $lastTime.text(state.finished_at || state.updated_at || '');
+                setVisible($last, true);
+            } else {
+                setVisible($last, false);
+            }
+
+            $buttonLabel.text(status === 'idle' ? BUTTON_LABEL_DEFAULT : BUTTON_LABEL_RESYNC);
+            $button.prop('disabled', false);
         }
 
         function refreshStatus() {
@@ -190,11 +617,20 @@
         function configValue(group, field) {
             var selector = '[name="groups[' + group + '][fields][' + field + '][value]"]';
             var element = $(selector);
-
             return element.length ? element.val() : '';
         }
 
-        $('#ecomail_start_sync').on('click', function () {
+        $button.on('click', function () {
+            if ($button.prop('disabled')) {
+                return;
+            }
+            // Optimistically reset the visible progress so the user doesn't see
+            // the previous run's bar pinned at 100% (or wherever it stopped).
+            resetActivePanel();
+            setVisible($last, false);
+            $buttonLabel.text(BUTTON_LABEL_RUNNING);
+            $button.prop('disabled', true);
+
             $.ajax({
                 url: '<?= $block->escapeJs($block->getStartUrl()) ?>',
                 dataType: 'json',
@@ -211,11 +647,15 @@
                 },
                 success: function (response) {
                     render(response.state || {});
+                },
+                error: function () {
+                    $button.prop('disabled', false);
+                    $buttonLabel.text(BUTTON_LABEL_DEFAULT);
                 }
             });
         });
 
-        render(state);
-        window.setInterval(refreshStatus, 10000);
+        render(initialState);
+        window.setInterval(refreshStatus, 5000);
     });
 </script>

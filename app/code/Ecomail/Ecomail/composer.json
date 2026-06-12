@@ -29,6 +29,10 @@
         "magento/module-customer": "*",
         "magento/module-catalog": "*",
         "magento/module-checkout": "*",
+        "magento/module-store": "*",
+        "magento/module-quote": "*",
+        "magento/module-backend": "*",
+        "magento/module-config": "*",
         "ext-curl": "*"
     },
     "type": "magento2-module",

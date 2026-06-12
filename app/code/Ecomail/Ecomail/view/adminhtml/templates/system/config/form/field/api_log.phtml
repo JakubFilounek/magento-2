@@ -28,7 +28,9 @@
                             <?= $success ? $block->escapeHtml(__('OK')) : $block->escapeHtml(__('Error')) ?>
                         </span>
                         <span><?= $block->escapeHtml($log['status_code'] ?: '-') ?></span>
-                        <span><?= $block->escapeHtml($log['duration_ms'] !== null ? $log['duration_ms'] . ' ms' : '-') ?></span>
+                        <span>
+                            <?= $block->escapeHtml($log['duration_ms'] !== null ? $log['duration_ms'] . ' ms' : '-') ?>
+                        </span>
                     </div>
                     <?php if (!empty($log['message'])): ?>
                         <div class="ecomail-api-log-message">
@@ -39,7 +41,11 @@
             <?php endforeach; ?>
         </div>
         <p class="note">
-            <span><?= $block->escapeHtml(__('Showing the last 10 compact request logs. Old log rows are cleaned automatically.')) ?></span>
+            <span>
+                <?= $block->escapeHtml(
+                    __('Showing the last 10 compact request logs. Old log rows are cleaned automatically.')
+                ) ?>
+            </span>
         </p>
     <?php endif; ?>
 </div>

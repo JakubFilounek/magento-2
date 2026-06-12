@@ -1,0 +1,51 @@
+{
+    "ecomail_sync_state": {
+        "column": {
+            "state_id": true,
+            "store_id": true,
+            "status": true,
+            "sync_customers": true,
+            "sync_orders": true,
+            "update_existing": true,
+            "include_tags": true,
+            "batch_size": true,
+            "customer_batch_size": true,
+            "order_batch_size": true,
+            "total_customers": true,
+            "processed_customers": true,
+            "total_orders": true,
+            "processed_orders": true,
+            "last_message": true,
+            "created_at": true,
+            "updated_at": true,
+            "started_at": true,
+            "finished_at": true,
+            "locked_at": true
+        },
+        "index": {
+            "ECOMAIL_SYNC_STATE_STATUS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    },
+    "ecomail_api_log": {
+        "column": {
+            "log_id": true,
+            "created_at": true,
+            "method": true,
+            "endpoint": true,
+            "status_code": true,
+            "success": true,
+            "duration_ms": true,
+            "message": true
+        },
+        "index": {
+            "ECOMAIL_API_LOG_CREATED_AT": true,
+            "ECOMAIL_API_LOG_SUCCESS": true
+        },
+        "constraint": {
+            "PRIMARY": true
+        }
+    }
+}

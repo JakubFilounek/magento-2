@@ -1,8 +1,15 @@
 <?php /** @var $block Ecomail\Ecomail\Block\System\Config\Form\Field\Status */ ?>
 <?php $statusCode = $block->getStatusCode() ?>
+<?php
+$statusLabels = [
+    'Active' => __('Active'),
+    'Inactive' => __('Inactive'),
+    'Error' => __('Error'),
+];
+?>
 
 <span class="ecomail-status <?= $block->escapeHtmlAttr($statusCode) ?>">
-    <?= $block->escapeHtml(__($statusCode)) ?>
+    <?= $block->escapeHtml($statusLabels[$statusCode] ?? $statusCode) ?>
 </span>
 <div class="ecomail-unsaved-warning"
      data-mage-init='{"Ecomail_Ecomail/js/unsaved-config-warning": {}}'

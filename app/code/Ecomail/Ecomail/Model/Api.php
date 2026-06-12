@@ -8,15 +8,15 @@ use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
 
 class Api
 {
-    const CLIENT_TIMEOUT = 5;
-    const API_URL = 'https://api2.ecomailapp.cz/';
-    const API_NEW_URL = 'https://apinew.ecomailapp.cz/';
-    const STATUS_OK = 200;
-    const STATUS_CREATED = 201;
-    const STATUS_NO_CONTENT = 204;
-    const UNKNOWN_ERROR_MESSAGE = 'UNKNOWN ERROR';
-    const MAX_BULK_SUBSCRIBERS = 3000;
-    const MAX_BULK_TRANSACTIONS = 1000;
+    public const CLIENT_TIMEOUT = 5;
+    public const API_URL = 'https://api2.ecomailapp.cz/';
+    public const API_NEW_URL = 'https://apinew.ecomailapp.cz/';
+    public const STATUS_OK = 200;
+    public const STATUS_CREATED = 201;
+    public const STATUS_NO_CONTENT = 204;
+    public const UNKNOWN_ERROR_MESSAGE = 'UNKNOWN ERROR';
+    public const MAX_BULK_SUBSCRIBERS = 3000;
+    public const MAX_BULK_TRANSACTIONS = 1000;
 
     /**
      * @var JsonSerializer
@@ -184,8 +184,7 @@ class Api
         array $subscriberData,
         bool $updateExisting = true,
         bool $includeTags = false
-    ): array
-    {
+    ): array {
         $subscriberData = array_slice($this->filterValidSubscribers($subscriberData), 0, self::MAX_BULK_SUBSCRIBERS);
 
         if (!$subscriberData) {
@@ -212,7 +211,11 @@ class Api
      */
     public function bulkOrders(array $transactionData): array
     {
-        $transactionData = array_slice($this->filterValidTransactions($transactionData), 0, self::MAX_BULK_TRANSACTIONS);
+        $transactionData = array_slice(
+            $this->filterValidTransactions($transactionData),
+            0,
+            self::MAX_BULK_TRANSACTIONS
+        );
 
         if (!$transactionData) {
             throw new IntegrationException(__('Ecomail api error: No valid transactions to send.'));
@@ -460,6 +463,7 @@ class Api
     /**
      * @param string $path
      * @return string
+     * @throws IntegrationException
      */
     private function buildListUrl(string $path): string
     {

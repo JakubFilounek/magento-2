@@ -17,7 +17,12 @@
         </button>
     </div>
     <p class="note">
-        <span><?= $block->escapeHtml(__('Use this URL in Ecomail to send subscription status updates back to Magento. Save the configuration after generating a new token.')) ?></span>
+        <span>
+            <?= $block->escapeHtml(
+                __('Use this URL in Ecomail to send subscription status updates back to Magento.')
+            ) ?>
+            <?= $block->escapeHtml(__('Save the configuration after generating a new token.')) ?>
+        </span>
     </p>
 </div>
 

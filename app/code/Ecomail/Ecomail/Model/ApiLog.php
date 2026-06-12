@@ -74,7 +74,10 @@ class ApiLog
         try {
             $connection = $this->resource->getConnection();
             $table = $this->resource->getTableName('ecomail_api_log');
-            $connection->delete($table, ['created_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ? DAY)' => self::RETENTION_DAYS]);
+            $connection->delete(
+                $table,
+                ['created_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ? DAY)' => self::RETENTION_DAYS]
+            );
 
             $count = (int)$connection->fetchOne($connection->select()->from($table, 'COUNT(*)'));
             if ($count <= self::MAX_ROWS) {

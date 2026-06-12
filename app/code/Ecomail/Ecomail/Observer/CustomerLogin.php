@@ -40,7 +40,9 @@ class CustomerLogin implements ObserverInterface
         /** @var CustomerInterface $customer */
         $customer = $observer->getCustomer();
 
-        if ($this->helper->isAvailable($customer->getStoreId()) && $this->helper->isTrackingEnabled($customer->getStoreId())) {
+        $storeId = $customer->getStoreId();
+
+        if ($this->helper->isAvailable($storeId) && $this->helper->isTrackingEnabled($storeId)) {
             $this->customerSession->setEcomailEmail($customer->getEmail());
         }
     }

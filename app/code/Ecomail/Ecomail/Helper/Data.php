@@ -10,38 +10,40 @@ use Magento\Store\Model\ScopeInterface;
 
 class Data extends AbstractHelper
 {
-    const XML_PATH_ECOMAIL_GENERAL_ENABLED = 'ecomail/general/enabled';
-    const XML_PATH_ECOMAIL_GENERAL_API_KEY = 'ecomail/general/api_key';
-    const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_LIST = 'ecomail/general/subscriber_list';
-    const XML_PATH_ECOMAIL_GENERAL_SKIP_DOUBLE_OPTIN = 'ecomail/general/skip_double_optin';
-    const XML_PATH_ECOMAIL_GENERAL_TRIGGER_AUTORESPONDERS = 'ecomail/general/trigger_autoresponders';
-    const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_SOURCE = 'ecomail/general/subscriber_source';
-    const XML_PATH_ECOMAIL_GENERAL_WEBHOOK_TOKEN = 'ecomail/general/webhook_token';
-    const XML_PATH_ECOMAIL_GENERAL_SYNC_EXISTING = 'ecomail/general/sync_existing';
-    const XML_PATH_ECOMAIL_GENERAL_SYNC_INCLUDE_TAGS = 'ecomail/general/sync_include_tags';
-    const XML_PATH_ECOMAIL_GENERAL_SYNC_UPDATE_EXISTING = 'ecomail/general/sync_update_existing';
-    const XML_PATH_ECOMAIL_GENERAL_SYNC_CUSTOMER_BATCH_SIZE = 'ecomail/general/sync_customer_batch_size';
-    const XML_PATH_ECOMAIL_GENERAL_SYNC_ORDER_BATCH_SIZE = 'ecomail/general/sync_order_batch_size';
-    const XML_PATH_ECOMAIL_GENERAL_CHECKOUT_OPT_OUT_LABEL = 'ecomail/general/checkout_opt_out_label';
+    public const XML_PATH_ECOMAIL_GENERAL_ENABLED = 'ecomail/general/enabled';
+    public const XML_PATH_ECOMAIL_GENERAL_API_KEY = 'ecomail/general/api_key';
+    public const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_LIST = 'ecomail/general/subscriber_list';
+    public const XML_PATH_ECOMAIL_GENERAL_SKIP_DOUBLE_OPTIN = 'ecomail/general/skip_double_optin';
+    public const XML_PATH_ECOMAIL_GENERAL_TRIGGER_AUTORESPONDERS = 'ecomail/general/trigger_autoresponders';
+    public const XML_PATH_ECOMAIL_GENERAL_SUBSCRIBER_SOURCE = 'ecomail/general/subscriber_source';
+    public const XML_PATH_ECOMAIL_GENERAL_WEBHOOK_TOKEN = 'ecomail/general/webhook_token';
+    public const XML_PATH_ECOMAIL_GENERAL_SYNC_EXISTING = 'ecomail/general/sync_existing';
+    public const XML_PATH_ECOMAIL_GENERAL_SYNC_INCLUDE_TAGS = 'ecomail/general/sync_include_tags';
+    public const XML_PATH_ECOMAIL_GENERAL_SYNC_UPDATE_EXISTING = 'ecomail/general/sync_update_existing';
+    public const XML_PATH_ECOMAIL_GENERAL_SYNC_CUSTOMER_BATCH_SIZE = 'ecomail/general/sync_customer_batch_size';
+    public const XML_PATH_ECOMAIL_GENERAL_SYNC_ORDER_BATCH_SIZE = 'ecomail/general/sync_order_batch_size';
+    public const XML_PATH_ECOMAIL_GENERAL_CHECKOUT_OPT_OUT_LABEL = 'ecomail/general/checkout_opt_out_label';
 
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_NAME = 'ecomail/personal_information/send_name';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ADDRESS = 'ecomail/personal_information/send_address';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_ADDRESS_TYPE = 'ecomail/personal_information/address_type';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_DOB = 'ecomail/personal_information/send_dob';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDER_TRANSACTIONS = 'ecomail/personal_information/send_orders';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_UPDATE_CONTACTS_FROM_ORDERS = 'ecomail/personal_information/update_contacts_from_orders';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_CART_ITEMS = 'ecomail/personal_information/send_cart_items';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_GROUPS = 'ecomail/personal_information/send_groups';
-    const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_LOCALE = 'ecomail/personal_information/send_locale';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_NAME = 'ecomail/personal_information/send_name';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ADDRESS = 'ecomail/personal_information/send_address';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_ADDRESS_TYPE = 'ecomail/personal_information/address_type';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_DOB = 'ecomail/personal_information/send_dob';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_ORDER_TRANSACTIONS =
+        'ecomail/personal_information/send_orders';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_UPDATE_CONTACTS_FROM_ORDERS =
+        'ecomail/personal_information/update_contacts_from_orders';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_CART_ITEMS = 'ecomail/personal_information/send_cart_items';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_GROUPS = 'ecomail/personal_information/send_groups';
+    public const XML_PATH_ECOMAIL_PERSONAL_INFORMATION_SEND_LOCALE = 'ecomail/personal_information/send_locale';
 
-    const XML_PATH_ECOMAIL_TRACKING_ENABLED = 'ecomail/tracking/enabled';
-    const XML_PATH_ECOMAIL_TRACKING_RESPECT_COOKIE_CONSENT = 'ecomail/tracking/respect_cookie_consent';
-    const XML_PATH_ECOMAIL_TRACKING_APP_ID = 'ecomail/tracking/app_id';
-    const XML_PATH_ECOMAIL_TRACKING_PRODUCT_VIEW = 'ecomail/tracking/product_view';
-    const XML_PATH_ECOMAIL_TRACKING_FORM_ENABLED = 'ecomail/tracking/form_enabled';
-    const XML_PATH_ECOMAIL_TRACKING_FORM_ID = 'ecomail/tracking/form_id';
-    const XML_PATH_ECOMAIL_TRACKING_FORM_ACCOUNT = 'ecomail/tracking/form_account';
-    const XML_PATH_MAGENTO_COOKIE_RESTRICTION = 'web/cookie/cookie_restriction';
+    public const XML_PATH_ECOMAIL_TRACKING_ENABLED = 'ecomail/tracking/enabled';
+    public const XML_PATH_ECOMAIL_TRACKING_RESPECT_COOKIE_CONSENT = 'ecomail/tracking/respect_cookie_consent';
+    public const XML_PATH_ECOMAIL_TRACKING_APP_ID = 'ecomail/tracking/app_id';
+    public const XML_PATH_ECOMAIL_TRACKING_PRODUCT_VIEW = 'ecomail/tracking/product_view';
+    public const XML_PATH_ECOMAIL_TRACKING_FORM_ENABLED = 'ecomail/tracking/form_enabled';
+    public const XML_PATH_ECOMAIL_TRACKING_FORM_ID = 'ecomail/tracking/form_id';
+    public const XML_PATH_ECOMAIL_TRACKING_FORM_ACCOUNT = 'ecomail/tracking/form_account';
+    public const XML_PATH_MAGENTO_COOKIE_RESTRICTION = 'web/cookie/cookie_restriction';
 
     /**
      * @var EncryptorInterface
@@ -306,7 +308,7 @@ class Data extends AbstractHelper
 
     /**
      * @param null $store
-     * @return string|null
+     * @return bool
      */
     public function respectCookieConsent($store = null): bool
     {

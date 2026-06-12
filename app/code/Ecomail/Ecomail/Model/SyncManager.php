@@ -166,14 +166,24 @@ class SyncManager
 
             if ((int)$state['sync_customers'] && (int)$state['processed_customers'] < (int)$state['total_customers']) {
                 $processed = $this->processCustomerBatch($state);
-                $this->updateProgress((int)$state['state_id'], 'processed_customers', $processed, 'Customer batch processed.');
+                $this->updateProgress(
+                    (int)$state['state_id'],
+                    'processed_customers',
+                    $processed,
+                    'Customer batch processed.'
+                );
                 $this->completeIfFinished((int)$state['state_id']);
                 return;
             }
 
             if ((int)$state['sync_orders'] && (int)$state['processed_orders'] < (int)$state['total_orders']) {
                 $processed = $this->processOrderBatch($state);
-                $this->updateProgress((int)$state['state_id'], 'processed_orders', $processed, 'Order batch processed.');
+                $this->updateProgress(
+                    (int)$state['state_id'],
+                    'processed_orders',
+                    $processed,
+                    'Order batch processed.'
+                );
                 $this->completeIfFinished((int)$state['state_id']);
                 return;
             }
@@ -249,7 +259,13 @@ class SyncManager
             } catch (\Exception $e) {
                 $this->logger->error(
                     'Ecomail customer sync mapping failed.',
-                    [$e, ['customer_id' => (int)$customer->getId(), 'email' => $this->maskEmail((string)$customer->getEmail())]]
+                    [
+                        $e,
+                        [
+                            'customer_id' => (int)$customer->getId(),
+                            'email' => $this->maskEmail((string)$customer->getEmail()),
+                        ],
+                    ]
                 );
             }
         }
@@ -290,7 +306,13 @@ class SyncManager
             } catch (\Exception $e) {
                 $this->logger->error(
                     'Ecomail order sync mapping failed.',
-                    [$e, ['order_id' => (string)$order->getIncrementId(), 'email' => $this->maskEmail((string)$order->getCustomerEmail())]]
+                    [
+                        $e,
+                        [
+                            'order_id' => (string)$order->getIncrementId(),
+                            'email' => $this->maskEmail((string)$order->getCustomerEmail()),
+                        ],
+                    ]
                 );
             }
         }
@@ -318,7 +340,8 @@ class SyncManager
         $where = [
             'state_id = ?' => (int)$state['state_id'],
             'status IN (?)' => [self::STATUS_PENDING, self::STATUS_RUNNING],
-            '(locked_at IS NULL OR locked_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL ' . self::LOCK_TTL_MINUTES . ' MINUTE) OR status = "pending")',
+            '(locked_at IS NULL OR locked_at < DATE_SUB(UTC_TIMESTAMP(), INTERVAL '
+                . self::LOCK_TTL_MINUTES . ' MINUTE) OR status = "pending")',
         ];
 
         $updated = $connection->update(
@@ -415,7 +438,10 @@ class SyncManager
             $this->api->bulkSubscribeToList($batch, $updateExisting, $includeTags);
         } catch (\Exception $e) {
             if (count($batch) <= 1) {
-                $this->logger->error('Ecomail subscriber sync item failed.', [$e, $this->getSubscriberLogContext(reset($batch))]);
+                $this->logger->error(
+                    'Ecomail subscriber sync item failed.',
+                    [$e, $this->getSubscriberLogContext(reset($batch))]
+                );
                 return;
             }
 
@@ -511,7 +537,9 @@ class SyncManager
      */
     private function getCustomerBatchSize(array $state): int
     {
-        return max(1, min(self::MAX_CUSTOMER_BATCH_SIZE, (int)($state['customer_batch_size'] ?? $state['batch_size'] ?? 1)));
+        $batchSize = (int)($state['customer_batch_size'] ?? $state['batch_size'] ?? 1);
+
+        return max(1, min(self::MAX_CUSTOMER_BATCH_SIZE, $batchSize));
     }
 
     /**
@@ -520,7 +548,9 @@ class SyncManager
      */
     private function getOrderBatchSize(array $state): int
     {
-        return max(1, min(self::MAX_ORDER_BATCH_SIZE, (int)($state['order_batch_size'] ?? $state['batch_size'] ?? 1)));
+        $batchSize = (int)($state['order_batch_size'] ?? $state['batch_size'] ?? 1);
+
+        return max(1, min(self::MAX_ORDER_BATCH_SIZE, $batchSize));
     }
 
     /**

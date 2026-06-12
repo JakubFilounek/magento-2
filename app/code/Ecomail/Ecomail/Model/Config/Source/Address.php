@@ -6,8 +6,8 @@ use Magento\Framework\Data\OptionSourceInterface;
 
 class Address implements OptionSourceInterface
 {
-    const SHIPPING_ADDRESS = 1;
-    const BILLING_ADDRESS = 2;
+    public const SHIPPING_ADDRESS = 1;
+    public const BILLING_ADDRESS = 2;
 
     /**
      * @return array[]
