@@ -3,7 +3,13 @@
 namespace Ecomail\Ecomail\Console\Command;
 
 use Ecomail\Ecomail\Helper\Data;
+use Ecomail\Ecomail\Model\Api;
+use Ecomail\Ecomail\Model\SubscriberDataMapper;
+use Ecomail\Ecomail\Model\SubscriptionManager;
 use Ecomail\Ecomail\Model\SyncManager;
+use Ecomail\Ecomail\Model\TransactionMapper;
+use Magento\Customer\Model\ResourceModel\Customer\CollectionFactory as CustomerCollectionFactory;
+use Magento\Sales\Model\ResourceModel\Order\CollectionFactory as OrderCollectionFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -26,23 +32,71 @@ class SyncExisting extends Command
     private $helper;
 
     /**
+     * @var Api
+     */
+    private $api;
+
+    /**
+     * @var SubscriberDataMapper
+     */
+    private $subscriberDataMapper;
+
+    /**
+     * @var TransactionMapper
+     */
+    private $transactionMapper;
+
+    /**
+     * @var SubscriptionManager
+     */
+    private $subscriptionManager;
+
+    /**
      * @var SyncManager
      */
     private $syncManager;
 
     /**
+     * @var CustomerCollectionFactory
+     */
+    private $customerCollectionFactory;
+
+    /**
+     * @var OrderCollectionFactory
+     */
+    private $orderCollectionFactory;
+
+    /**
      * @param Data $helper
+     * @param Api $api
+     * @param SubscriberDataMapper $subscriberDataMapper
+     * @param TransactionMapper $transactionMapper
+     * @param SubscriptionManager $subscriptionManager
      * @param SyncManager $syncManager
+     * @param CustomerCollectionFactory $customerCollectionFactory
+     * @param OrderCollectionFactory $orderCollectionFactory
      * @param string|null $name
      */
     public function __construct(
         Data $helper,
+        Api $api,
+        SubscriberDataMapper $subscriberDataMapper,
+        TransactionMapper $transactionMapper,
+        SubscriptionManager $subscriptionManager,
         SyncManager $syncManager,
+        CustomerCollectionFactory $customerCollectionFactory,
+        OrderCollectionFactory $orderCollectionFactory,
         ?string $name = null
     ) {
         parent::__construct($name);
         $this->helper = $helper;
+        $this->api = $api;
+        $this->subscriberDataMapper = $subscriberDataMapper;
+        $this->transactionMapper = $transactionMapper;
+        $this->subscriptionManager = $subscriptionManager;
         $this->syncManager = $syncManager;
+        $this->customerCollectionFactory = $customerCollectionFactory;
+        $this->orderCollectionFactory = $orderCollectionFactory;
     }
 
     /**
